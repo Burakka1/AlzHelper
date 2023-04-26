@@ -20,7 +20,6 @@ Widget customDivider({
     ),
   );
 }
-//asdasd
 // buildCustomCircleAvatar(50, 20, 8),
 Widget buildCustomCircleAvatar(
   double radius,
