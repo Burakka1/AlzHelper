@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Home.dart';
 import 'Profile.dart';
 
+//sdmsadsa
 //Divider çekmek için widget Container( child: customDivider(),),
 Widget customDivider({
   double height = 1.2,
@@ -20,6 +21,7 @@ Widget customDivider({
     ),
   );
 }
+
 // buildCustomCircleAvatar(50, 20, 8),
 Widget buildCustomCircleAvatar(
   double radius,
@@ -39,6 +41,7 @@ Widget buildCustomCircleAvatar(
     ),
   );
 }
+
 //NotesWidget(child: const Text('Note 1')), şeklinde kullanarak not kartı çekilir.
 class NotesWidget extends StatelessWidget {
   final Widget child;
@@ -77,5 +80,3 @@ class AllColors {
   static const Color black = Colors.black;
   static const Color red = Colors.red;
 }
-
-
