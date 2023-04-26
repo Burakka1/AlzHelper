@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Home.dart';
 import 'Profile.dart';
 
-
+//dsjnadjsjda
 //Divider çekmek için widget Container( child: customDivider(),),
 Widget customDivider({
   double height = 1.2,
