@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Classes.dart';
 
-class AnaSayfa extends StatelessWidget {
-  const AnaSayfa({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
+          
           const SizedBox(height: 20),
-          CircleAvatar(
-            radius: 50,
-          ),
+         buildCustomCircleAvatar(50, 20, 8),
           Container(
             child: customDivider(),
           ),
@@ -92,51 +91,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text(
                   'Kartlar',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  
                 ),
               ),
             ],
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Container(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.home),
-              ),
-              Container(
-                
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Column(
-                  children: [
-                    
-                    IconButton(
-                      
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person),
-              ),
-            ],
-          ),
-        ),
-      ),
+      
     );
   }
 }

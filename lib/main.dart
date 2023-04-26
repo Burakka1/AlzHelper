@@ -1,7 +1,9 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'AnaSayfa.dart';
+import 'package:flutter_p/Classes.dart';
+import 'package:flutter_p/Notes.dart';
+import 'Home.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const AnaSayfa(),
+      home: Navbar(),
     );
   }
 }
