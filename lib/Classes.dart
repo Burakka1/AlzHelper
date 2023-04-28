@@ -49,7 +49,9 @@ class NotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
+      
       width: 150,
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
@@ -57,22 +59,28 @@ class NotesWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: AllColors.grey,
       ),
+      
       child: Padding(
-        // Padding içinde Align ve SizedBox kullanılarak sol üst köşede yerleştirilir
         padding: const EdgeInsets.all(20),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: SizedBox(
-            width: 110,
-            height: 110,
-            child: child,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 110,
+              height: 20, // height değeri 120 olarak değiştirildi
+              child: child,
+            ),
+            const Divider(
+  height: 10,
+  thickness: 2,
+  color: AllColors.black,
+),
+          ],
         ),
       ),
     );
   }
 }
-
 class FamilyRelationsWidget extends StatelessWidget {
   final String name;
   final String degreeOfCloseness;
