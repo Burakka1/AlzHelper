@@ -1,38 +1,21 @@
 import 'package:flutter/material.dart';
 import 'Classes.dart';
 
-class Home extends StatelessWidget {
+
+
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
+ 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My App',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: const MyHomePage(title: 'My App'),
-    );
-  }
+  State<Home> createState() => _HomeState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-      ),
+      appBar: AppBar(),
       body: Column(
         children: [
           

@@ -73,6 +73,70 @@ class NotesWidget extends StatelessWidget {
   }
 }
 
+class FamilyRelationsWidget extends StatelessWidget {
+  final String name;
+  final String degreeOfCloseness;
+  
+  const FamilyRelationsWidget({
+    Key? key,
+    required this.name,
+    required this.degreeOfCloseness,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: AllColors.grey,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.width * 0.45,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      degreeOfCloseness,
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
 //Color color = AllColors.grey, şeklinde renkleri çekmek için
 class AllColors {
   static const Color white = Colors.white;
