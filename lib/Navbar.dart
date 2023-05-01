@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'Home.dart';
 import 'Profile.dart';
 
-
-
 class Navbar extends StatefulWidget {
+  const Navbar({Key? key}) : super(key: key);
+
   @override
   _NavbarState createState() => _NavbarState();
 }
@@ -13,11 +13,11 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   int currentTab = 0;
   final List<Widget> screens = [
-    Home(),
-    Profile(),
+    const Home(),
+    const Profile(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Home();
+  Widget currentScreen = const Home();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _NavbarState extends State<Navbar> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        child: Icon(
+        child: const Icon(
           Icons.warning_amber_sharp,
           color: Colors.black,
         ),
@@ -41,9 +41,9 @@ class _NavbarState extends State<Navbar> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.grey.shade800,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -55,7 +55,7 @@ class _NavbarState extends State<Navbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Home();
+                        currentScreen = const Home();
                         currentTab = 0;
                       });
                     },
@@ -79,7 +79,7 @@ class _NavbarState extends State<Navbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Profile();
+                        currentScreen = const Profile();
                         currentTab = 1;
                       });
                     },

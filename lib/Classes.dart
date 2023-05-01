@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Home.dart';
-import 'Profile.dart';
 
 //dsjnadjsjda
 //Divider çekmek için widget Container( child: customDivider(),),
@@ -10,7 +8,7 @@ Widget customDivider({
 }) {
   return Container(
     height: height,
-    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
     decoration: BoxDecoration(
       border: Border(
         bottom: BorderSide(
@@ -49,9 +47,7 @@ class NotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       width: 150,
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
@@ -59,7 +55,6 @@ class NotesWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: AllColors.grey,
       ),
-      
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -71,20 +66,21 @@ class NotesWidget extends StatelessWidget {
               child: child,
             ),
             const Divider(
-  height: 10,
-  thickness: 2,
-  color: AllColors.black,
-),
+              height: 10,
+              thickness: 2,
+              color: AllColors.black,
+            ),
           ],
         ),
       ),
     );
   }
 }
+
 class FamilyRelationsWidget extends StatelessWidget {
   final String name;
   final String degreeOfCloseness;
-  
+
   const FamilyRelationsWidget({
     Key? key,
     required this.name,
@@ -95,7 +91,7 @@ class FamilyRelationsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.45,
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AllColors.grey,
@@ -105,9 +101,8 @@ class FamilyRelationsWidget extends StatelessWidget {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.width * 0.45,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
             ),
           ),
           SizedBox(
@@ -121,14 +116,14 @@ class FamilyRelationsWidget extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       degreeOfCloseness,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
@@ -142,8 +137,6 @@ class FamilyRelationsWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 //Color color = AllColors.grey, şeklinde renkleri çekmek için
 class AllColors {

@@ -10,32 +10,31 @@ class Notes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Notes')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: const Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
               children: [
-               NotesWidget(child: const Text('Note 1')),
-               NotesWidget(child: const Text('Note 1')),
+                NotesWidget(child: Text('Note 1')),
+                NotesWidget(child: Text('Note 1')),
               ],
             ),
             Row(
               children: [
-                NotesWidget(child: const Text('Note 1')),
+                NotesWidget(child: Text('Note 1')),
               ],
-            
             )
-            
           ],
         ),
       ),
     );
   }
-  
 }
 
 class Navbar extends StatefulWidget {
+  const Navbar({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -44,7 +43,10 @@ class _HomeState extends State<Navbar> {
   // Properties & Variables needed
 
   int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [Home(), Profile()]; // to store nested tabs
+  final List<Widget> screens = [
+    const Home(),
+    const Profile()
+  ]; // to store nested tabs
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Home(); // Our first view in viewport
 
@@ -57,15 +59,15 @@ class _HomeState extends State<Navbar> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        child: Icon(Icons.warning_amber_outlined),
+        child: const Icon(Icons.warning_amber_outlined),
         onPressed: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.grey.shade800,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -78,7 +80,7 @@ class _HomeState extends State<Navbar> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                            Navbar(); // if user taps on this dashboard tab will be active
+                            const Navbar(); // if user taps on this dashboard tab will be active
                         currentTab = 0;
                       });
                     },
@@ -105,7 +107,7 @@ class _HomeState extends State<Navbar> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                            Profile(); // if user taps on this dashboard tab will be active
+                            const Profile(); // if user taps on this dashboard tab will be active
                         currentTab = 3;
                       });
                     },

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Classes.dart';
 
-
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
- 
   @override
   State<Home> createState() => _HomeState();
 }
@@ -18,9 +15,8 @@ class _HomeState extends State<Home> {
       appBar: AppBar(),
       body: Column(
         children: [
-          
           const SizedBox(height: 20),
-         buildCustomCircleAvatar(50, 20, 8),
+          buildCustomCircleAvatar(50, 20, 8),
           Container(
             child: customDivider(),
           ),
@@ -39,9 +35,9 @@ class _HomeState extends State<Home> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
                   'Aile Yakınları',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -66,22 +62,20 @@ class _HomeState extends State<Home> {
             child: customDivider(),
           ),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: const Text(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
                   'Kartlar',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  
                 ),
               ),
             ],
           ),
         ],
       ),
-      
     );
   }
 }
