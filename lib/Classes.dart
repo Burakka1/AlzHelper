@@ -157,6 +157,7 @@ class CustomFloatingActionButton extends StatelessWidget {
   }
 }
 
+
 //Color color = AllColors.grey, şeklinde renkleri çekmek için
 class AllColors {
   static const Color white = Colors.white;
