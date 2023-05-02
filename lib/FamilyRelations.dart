@@ -9,7 +9,7 @@ class FamilyRelations extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body:  SingleChildScrollView(
-        child: Column(
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),

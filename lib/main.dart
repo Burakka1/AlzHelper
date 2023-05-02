@@ -1,8 +1,10 @@
 //import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/FamilyRelations.dart';
+import 'package:flutter_p/Navbar.dart';
 import 'package:flutter_p/Notes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_p/Reminders.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const FamilyRelations(),
+      home: const Navbar(),
     );
   }
 }

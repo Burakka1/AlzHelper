@@ -76,6 +76,7 @@ class NotesWidget extends StatelessWidget {
   }
 }
 
+
 class FamilyRelationsWidget extends StatelessWidget {
   final String name;
   final String degreeOfCloseness;
@@ -137,6 +138,25 @@ class FamilyRelationsWidget extends StatelessWidget {
   }
 }
 
+class CustomFloatingActionButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const CustomFloatingActionButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: onPressed,
+      tooltip: 'Add',
+      child: Icon(Icons.add, color: AllColors.black),
+      backgroundColor: AllColors.grey,
+      shape: StadiumBorder(
+        side: BorderSide(color: AllColors.black, width: 0.8),
+      ),
+    );
+  }
+}
+
 //Color color = AllColors.grey, şeklinde renkleri çekmek için
 class AllColors {
   static const Color white = Colors.white;
@@ -144,3 +164,4 @@ class AllColors {
   static const Color black = Colors.black;
   static const Color red = Colors.red;
 }
+

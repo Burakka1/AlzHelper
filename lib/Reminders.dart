@@ -10,7 +10,7 @@ class Reminders extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: CustomFloatingActionButton(
         onPressed: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
