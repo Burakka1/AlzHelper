@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
             child: customDivider(),
           ),
           const SizedBox(height: 10),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(

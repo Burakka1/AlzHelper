@@ -10,7 +10,7 @@ class Notes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Notes')),
-      body: const Padding(
+      body:  Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
