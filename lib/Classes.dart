@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 //Divider çekmek için widget Container( child: customDivider(),),
 Widget customDivider({
@@ -39,43 +41,92 @@ Widget buildCustomCircleAvatar(
   );
 }
 
-//NotesWidget(child: const Text('Note 1')), şeklinde kullanarak not kartı çekilir.
-class NotesWidget extends StatelessWidget {
-  final Widget child;
-  const NotesWidget({Key? key, required this.child}) : super(key: key);
+// //NotesWidget(child: const Text('Note 1')), şeklinde kullanarak not kartı çekilir.
+// class NotesWidget extends StatelessWidget {
+//   final Widget child;
+//   const NotesWidget({Key? key, required this.child}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 150,
+//       height: 150,
+//       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(10),
+//         color: AllColors.grey,
+//       ),
+//       child: Padding(
+//         padding: const EdgeInsets.all(20),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             SizedBox(
+//               width: 110,
+//               height: 20, // height değeri 120 olarak değiştirildi
+//               child: child,
+//             ),
+//             const Divider(
+//               height: 10,
+//               thickness: 2,
+//               color: AllColors.black,
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//note card
+Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
         color: AllColors.grey,
+        borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 110,
-              height: 20, // height değeri 120 olarak değiştirildi
-              child: child,
-            ),
-            const Divider(
-              height: 10,
-              thickness: 2,
-              color: AllColors.black,
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            doc["note_title"],
+            style: CardTextStyle.mainTitle,
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          const Divider(
+            height: 10,
+            thickness: 2,
+            color: AllColors.black,
+          ),
+          Text(
+            doc["creation_date"],
+            style: CardTextStyle.dateTitle,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          const Divider(
+            height: 10,
+            thickness: 2,
+            color: AllColors.black,
+          ),
+          Text(
+            doc["note_content"],
+            style: CardTextStyle.mainContent,
+            maxLines: 6,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
-
 
 class FamilyRelationsWidget extends StatelessWidget {
   final String name;
@@ -141,7 +192,8 @@ class FamilyRelationsWidget extends StatelessWidget {
 class CustomFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const CustomFloatingActionButton({Key? key, required this.onPressed}) : super(key: key);
+  const CustomFloatingActionButton({Key? key, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +209,15 @@ class CustomFloatingActionButton extends StatelessWidget {
   }
 }
 
+//Card Text style
+class CardTextStyle {
+  static TextStyle mainTitle =
+      GoogleFonts.roboto(fontSize: 18.0, fontWeight: FontWeight.bold);
+  static TextStyle mainContent =
+      GoogleFonts.roboto(fontSize: 16.0, fontWeight: FontWeight.normal);
+  static TextStyle dateTitle =
+      GoogleFonts.roboto(fontSize: 13.0, fontWeight: FontWeight.w500);
+}
 
 //Color color = AllColors.grey, şeklinde renkleri çekmek için
 class AllColors {
@@ -165,4 +226,3 @@ class AllColors {
   static const Color black = Colors.black;
   static const Color red = Colors.red;
 }
-
