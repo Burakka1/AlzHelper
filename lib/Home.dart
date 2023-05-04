@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'Classes.dart';
+import 'Location/location_permission.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -62,10 +66,10 @@ class _HomeState extends State<Home> {
             child: customDivider(),
           ),
           const SizedBox(height: 10),
-           Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   'Kartlar',

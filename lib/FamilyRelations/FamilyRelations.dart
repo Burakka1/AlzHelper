@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Classes.dart';
+import '../Classes.dart';
 
 class FamilyRelations extends StatelessWidget {
   const FamilyRelations({Key? key}) : super(key: key);
@@ -8,8 +8,8 @@ class FamilyRelations extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body:  SingleChildScrollView(
-        child:  Column(
+      body: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),

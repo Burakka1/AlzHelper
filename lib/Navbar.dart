@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'Home.dart';
+import 'Location/location_permission.dart';
 import 'Profile.dart';
 
 class Navbar extends StatefulWidget {
@@ -11,6 +15,42 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+  late Timer _timer;
+  bool _isSendingLocation = false;
+
+  Future<void> _sendLocationToFirebase() async {
+    try {
+      Position position = await getCurrentLocation();
+      await saveLocationToFirebase(position);
+    } catch (e) {
+      print('Hata: $e');
+    }
+  }
+
+  void _startSendingLocation() {
+    // Konum gönderme işlemini başlat.
+    _timer = Timer.periodic(
+        Duration(minutes: 1), (Timer t) => _sendLocationToFirebase());
+    setState(() {
+      _isSendingLocation = true;
+    });
+  }
+
+  void _stopSendingLocation() {
+    // Konum gönderme işlemini durdur.
+    _timer.cancel();
+    setState(() {
+      _isSendingLocation = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Timer'ı iptal et.
+    _timer?.cancel();
+  }
+
   int currentTab = 0;
   final List<Widget> screens = [
     const Home(),
@@ -36,7 +76,8 @@ class _NavbarState extends State<Navbar> {
           Icons.warning_amber_sharp,
           color: Colors.black,
         ),
-        onPressed: () {},
+        onPressed:
+            _isSendingLocation ? _stopSendingLocation : _startSendingLocation,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

@@ -128,6 +128,56 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
   );
 }
 
+Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: AllColors.grey,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            doc["fam_title"],
+            style: CardTextStyle.mainTitle,
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          const Divider(
+            height: 10,
+            thickness: 2,
+            color: AllColors.black,
+          ),
+          Text(
+            doc["fam_pic"],
+            style: CardTextStyle.dateTitle,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          const Divider(
+            height: 10,
+            thickness: 2,
+            color: AllColors.black,
+          ),
+          Text(
+            doc["fam_relations"],
+            style: CardTextStyle.mainContent,
+            maxLines: 6,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+// Family Relations class
 class FamilyRelationsWidget extends StatelessWidget {
   final String name;
   final String degreeOfCloseness;
