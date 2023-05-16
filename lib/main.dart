@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/FamilyRelations/FamilyRelations.dart';
 import 'package:flutter_p/Home.dart';
+import 'package:flutter_p/Login-Register/first_screen.dart';
 import 'package:flutter_p/Navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_p/Reminders.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Navbar(),
+      home: first_screen(),
     );
   }
 }
