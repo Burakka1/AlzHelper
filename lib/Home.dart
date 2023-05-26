@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'Classes.dart';
-import 'Location/location_permission.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -56,20 +52,23 @@ class _HomeState extends State<Home> {
             ],
           ),
           const SizedBox(height: 10),
-          Row(
-            children: List.generate(
-              5,
-              (index) => buildCustomCircleAvatar(35, 10, 8),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(
+                10,
+                (index) => buildCustomCircleAvatar(35, 10, 8),
+              ),
             ),
           ),
           Container(
             child: customDivider(),
           ),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   'Kartlar',

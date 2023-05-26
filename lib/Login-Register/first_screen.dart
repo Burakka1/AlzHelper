@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/Login-Register/patient_relative_login.dart';
 import 'package:flutter_p/Login-Register/register.dart';
 import 'patient_login.dart';
+
 class first_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,9 @@ class first_screen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => patient_login()),
-    );
+                  context,
+                  MaterialPageRoute(builder: (context) => patient_login()),
+                );
               },
               child: Text('Hasta Girişi'),
               style: ElevatedButton.styleFrom(
@@ -40,9 +41,10 @@ class first_screen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => patient_relative_login()),
-    );
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => patient_relative_login()),
+                );
               },
               child: Text('Hasta Yakını Girişi'),
               style: ElevatedButton.styleFrom(
@@ -55,9 +57,9 @@ class first_screen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => register()),
-    );
+                  context,
+                  MaterialPageRoute(builder: (context) => register()),
+                );
               },
               child: Text(
                 'Üye olmak için tıklayın.',
