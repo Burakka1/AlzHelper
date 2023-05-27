@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Login-Register/patient_register.dart';
-import 'package:flutter_p/Login-Register/register_choice.dart';
+import 'package:flutter_p/Login-Register/patient_relative_register.dart';
 import 'login.dart';
 
-class first_screen extends StatelessWidget {
+class register_choice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +15,7 @@ class first_screen extends StatelessWidget {
             Container(
               width: 200,
               height: 200,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/logo.png'),
                   fit: BoxFit.cover,
@@ -27,10 +27,10 @@ class first_screen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => patient_login()),
+                  MaterialPageRoute(builder: (context) => patient_register()),
                 );
               },
-              child: Text('Giriş Yap'),
+              child: Text('Hasta Kayıt'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
@@ -42,16 +42,18 @@ class first_screen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => register_choice()),
+                  MaterialPageRoute(
+                      builder: (context) => patient_relative_register()),
                 );
               },
-              child: Text('Üye Ol'),
+              child: Text('Hasta Yakını Kayıt'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 textStyle: TextStyle(fontSize: 20),
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),

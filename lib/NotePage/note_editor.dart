@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Classes.dart';
 
@@ -53,7 +54,12 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          FirebaseFirestore.instance.collection("Notes").add({
+          String uid = FirebaseAuth.instance.currentUser!.uid;
+          FirebaseFirestore.instance
+              .collection("Users")
+              .doc(uid)
+              .collection("Notes")
+              .add({
             "note_title": _titleController.text,
             "creation_date": date,
             "note_content": _mainController.text,

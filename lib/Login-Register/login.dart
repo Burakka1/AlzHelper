@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_p/Navbar.dart';
+import 'package:flutter_p/UI/Home.dart';
+import 'package:flutter_p/UI/Navbar.dart';
 import 'package:flutter_p/Services/auth.dart';
-import 'package:flutter_p/Classes.dart';
+import 'package:flutter_p/UI/patient_relative_home.dart';
+import 'package:flutter_p/UI/patient_relative_navbar.dart';
 
 class patient_login extends StatefulWidget {
   const patient_login({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class _patient_loginState extends State<patient_login> {
   final TextEditingController _passwordController = TextEditingController();
   AuthService _authService = AuthService();
   String _errorMessage = '';
+
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -78,25 +82,26 @@ class _patient_loginState extends State<patient_login> {
                       String email = _emailController.text.trim();
                       String password = _passwordController.text.trim();
 
-                     if (email.isEmpty || password.isEmpty) {
-  setState(() {
-    _errorMessage = 'Email veya şifre boş bırakılamaz.';
-  });
-} else {
-  _authService.signIn(email, password).then((user) {
-    if (user != null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Navbar()));
-    }
-  }).catchError((error) {
-    String errorMessage = error.toString();
-    if (errorMessage.startsWith('Exception: ')) {
-      errorMessage = errorMessage.substring('Exception: '.length);
-    }
-    setState(() {
-      _errorMessage = errorMessage;
-    });
-  });
-}
+                      if (email.isEmpty || password.isEmpty) {
+                        setState(() {
+                          _errorMessage = 'Email veya şifre boş bırakılamaz.';
+                        });
+                      } else {
+                        _authService.signIn(email, password).then((user) {
+                          if (user != null) {
+                            redirectUser();
+                          }
+                        }).catchError((error) {
+                          String errorMessage = error.toString();
+                          if (errorMessage.startsWith('Exception: ')) {
+                            errorMessage =
+                                errorMessage.substring('Exception: '.length);
+                          }
+                          setState(() {
+                            _errorMessage = errorMessage;
+                          });
+                        });
+                      }
                     },
                     child: Text(
                       'Giriş Yap',
@@ -124,5 +129,35 @@ class _patient_loginState extends State<patient_login> {
         ],
       ),
     );
+  }
+
+  void redirectUser() async {
+    // Kullanıcının UID'sini alın
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    // Firebase Firestore ile kullanıcının verilerini çekin
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+
+    // Kullanıcı türünü alın
+    String userType = snapshot['userType'];
+
+    // Kullanıcı türüne göre yönlendirme yapın
+    if (userType == 'patient') {
+      // Kullanıcı türü A ise A sayfasına yönlendirin
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Navbar()),
+      );
+    } else if (userType == 'patient_relative') {
+      // Kullanıcı türü B ise B sayfasına yönlendirin
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Navbar1()),
+      );
+    } else {
+      // Geçersiz kullanıcı türü
+      print('Geçersiz kullanıcı türü');
+    }
   }
 }

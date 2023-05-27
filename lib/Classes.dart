@@ -5,11 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 //Divider çekmek için widget Container( child: customDivider(),),
 Widget customDivider({
   double height = 1.2,
-  Color color = AllColors.grey,
+  Color color = Colors.grey,
 }) {
   return Container(
     height: height,
-    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
     decoration: BoxDecoration(
       border: Border(
         bottom: BorderSide(
@@ -41,42 +41,44 @@ Widget buildCustomCircleAvatar(
   );
 }
 
-// //NotesWidget(child: const Text('Note 1')), şeklinde kullanarak not kartı çekilir.
-// class NotesWidget extends StatelessWidget {
-//   final Widget child;
-//   const NotesWidget({Key? key, required this.child}) : super(key: key);
+//NotesWidget(child: const Text('Note 1')), şeklinde kullanarak not kartı çekilir.
+class NotesWidget extends StatelessWidget {
+  final Widget child;
+  const NotesWidget({Key? key, required this.child}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 150,
-//       height: 150,
-//       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(10),
-//         color: AllColors.grey,
-//       ),
-//       child: Padding(
-//         padding: const EdgeInsets.all(20),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(
-//               width: 110,
-//               height: 20, // height değeri 120 olarak değiştirildi
-//               child: child,
-//             ),
-//             const Divider(
-//               height: 10,
-//               thickness: 2,
-//               color: AllColors.black,
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 170,
+        height: 180,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AllColors.grey,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 110,
+                height: 45, // height değeri 120 olarak değiştirildi
+                child: child,
+              ),
+              const Divider(
+                height: 10,
+                thickness: 2,
+                color: AllColors.black,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 //note card
 Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'Home.dart';
-import 'Location/location_permission.dart';
-import 'Profile.dart';
+import '../Location/location_permission.dart';
+import '../Profile.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({Key? key}) : super(key: key);

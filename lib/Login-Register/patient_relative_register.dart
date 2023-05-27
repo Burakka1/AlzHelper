@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../Navbar.dart';
 import '../Services/auth.dart';
 
-class register extends StatefulWidget {
+class patient_relative_register extends StatefulWidget {
   @override
-  State<register> createState() => _registerState();
+  State<patient_relative_register> createState() => _registerState();
 }
 
-class _registerState extends State<register> {
+class _registerState extends State<patient_relative_register> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _patientID = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
@@ -30,6 +29,7 @@ class _registerState extends State<register> {
 
     try {
       if (_passwordController.text == _confirmPasswordController.text) {
+        String patient_relative = "patient_relative";
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
@@ -41,6 +41,8 @@ class _registerState extends State<register> {
           "firstName": _firstNameController.text,
           "lastName": _lastNameController.text,
           "email": _emailController.text,
+          "patientID": _patientID.text,
+          "userType": patient_relative,
         };
         await UsersRef.doc(uid).set(SetData);
       } else {
@@ -100,11 +102,11 @@ class _registerState extends State<register> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 10,
@@ -114,11 +116,11 @@ class _registerState extends State<register> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
                         width: 100,
                         height: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           image: DecorationImage(
@@ -127,53 +129,61 @@ class _registerState extends State<register> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                         controller: _firstNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'İsim',
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _lastNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Soy isim',
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _passwordController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Şifre',
                         ),
                         obscureText: true,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _confirmPasswordController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Şifre Tekrarı',
                         ),
                         obscureText: true,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _patientID,
+                        decoration: const InputDecoration(
+                          labelText: 'Hasta ID',
+                        ),
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 20),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                         ),
                         child: ElevatedButton(
                           onPressed: () {
                             signUserUp();
                           },
-                          child: Text(
+                          child: const Text(
                             'Kayıt Ol',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -187,10 +197,10 @@ class _registerState extends State<register> {
                       ),
                       if (_errorMessage.isNotEmpty)
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Text(
                             _errorMessage,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         ),
                     ],

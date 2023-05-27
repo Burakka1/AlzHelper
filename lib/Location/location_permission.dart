@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,9 +37,10 @@ Future<void> saveLocationToFirebase(Position position) async {
 
   // Firestore referansı.
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   // Firestore'a konum verisi ekleme.
-  await firestore.collection('konumlar').add({
+  await firestore.collection('Users').doc(uid).collection("Locations").add({
     'latitude': position.latitude,
     'longitude': position.longitude,
     'time': DateTime.now(),
