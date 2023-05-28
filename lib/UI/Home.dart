@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_p/FamilyRelations/family_relations.dart';
 import 'package:flutter_p/NotePage/notepage.dart';
 import '../Classes.dart';
 import '../NotePage/note_reader.dart';
@@ -73,7 +74,12 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => family_relations()));
+                    },
                     child: const Text(
                       'Tümünü Gör',
                       style: TextStyle(fontSize: 14, color: Colors.grey),
@@ -81,7 +87,6 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -110,10 +115,10 @@ class _HomeState extends State<Home> {
               ),
               Row(
                 children: [
-                  SizedBox(
-                    width: 180,
-                    height: 200,
-                    child: Expanded(
+                  Expanded(
+                    child: SizedBox(
+                      width: 180,
+                      height: 200,
                       child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection("Users")
@@ -164,6 +169,10 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 200,
+                    width: 180,
+                  )
                 ],
               )
             ],

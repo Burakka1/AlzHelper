@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Classes.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../NotePage/note_editor.dart';
+import 'package:flutter_p/FamilyRelations/family_relations_editor.dart';
 import '../NotePage/note_reader.dart';
 
 class family_relations extends StatefulWidget {
@@ -16,36 +13,14 @@ class family_relations extends StatefulWidget {
 }
 
 class _family_relationsState extends State<family_relations> {
-  final ImagePicker _imagePicker = ImagePicker();
-  dynamic _pickImage;
-  late PickedFile profileImage;
-  Widget imagePlace() {
-    double height = MediaQuery.of(context).size.height;
-    if (profileImage != null) {
-      return CircleAvatar(
-          backgroundImage: FileImage(File(profileImage!.path)),
-          radius: height * 0.08);
-    } else {
-      if (_pickImage != null) {
-        return CircleAvatar(
-          backgroundImage: NetworkImage(_pickImage),
-          radius: height * 0.08,
-        );
-      } else {
-        return CircleAvatar(
-          backgroundImage: AssetImage("assets/images/siyah.png"),
-          radius: height * 0.08,
-        );
-      }
-    }
-  }
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text("Notlarım"),
+        title: const Text("Aile Yakınları"),
         centerTitle: true,
       ),
       body: Padding(
@@ -60,6 +35,8 @@ class _family_relationsState extends State<family_relations> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(uid)
                       .collection("family_relations")
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -85,7 +62,7 @@ class _family_relationsState extends State<family_relations> {
                             .toList(),
                       );
                     }
-                    return const Text("Henüz not eklemediniz");
+                    return const Text("Henüz eklemediniz");
                   }),
             )
           ],
@@ -96,11 +73,11 @@ class _family_relationsState extends State<family_relations> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const NoteEditorScreen(),
+                builder: (context) => FamilyRelationsEditor(),
               ));
         },
         icon: const Icon(Icons.add),
-        label: const Text("Not Ekle"),
+        label: const Text("Oluştur"),
       ),
     );
   }

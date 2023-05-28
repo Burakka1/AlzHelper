@@ -21,8 +21,6 @@ class _patient_loginState extends State<patient_login> {
   AuthService _authService = AuthService();
   String _errorMessage = '';
 
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

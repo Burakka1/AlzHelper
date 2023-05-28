@@ -143,36 +143,29 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            doc["fam_title"],
-            style: CardTextStyle.mainTitle,
+          Image.network(
+            "image",
+            fit: BoxFit.cover,
+            height: 200.0,
           ),
-          const SizedBox(
-            height: 4,
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "title",
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-          const Divider(
-            height: 10,
-            thickness: 2,
-            color: AllColors.black,
-          ),
-          Text(
-            doc["fam_pic"],
-            style: CardTextStyle.dateTitle,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Divider(
-            height: 10,
-            thickness: 2,
-            color: AllColors.black,
-          ),
-          Text(
-            doc["fam_relations"],
-            style: CardTextStyle.mainContent,
-            maxLines: 6,
-            overflow: TextOverflow.ellipsis,
-          ),
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "subtitle",
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ))
         ],
       ),
     ),

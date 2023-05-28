@@ -20,36 +20,38 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       appBar: AppBar(
         title: Text("Yeni Note Ekle"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                  border: InputBorder.none, hintText: "Note Başlığı"),
-              style: CardTextStyle.mainTitle,
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              date,
-              style: CardTextStyle.dateTitle,
-            ),
-            const SizedBox(
-              height: 28.0,
-            ),
-            TextField(
-              controller: _mainController,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: const InputDecoration(
-                  border: InputBorder.none, hintText: "Not yazmaya başlayın"),
-              style: CardTextStyle.mainContent,
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                    border: InputBorder.none, hintText: "Note Başlığı"),
+                style: CardTextStyle.mainTitle,
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                date,
+                style: CardTextStyle.dateTitle,
+              ),
+              const SizedBox(
+                height: 28.0,
+              ),
+              TextField(
+                controller: _mainController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: const InputDecoration(
+                    border: InputBorder.none, hintText: "Not yazmaya başlayın"),
+                style: CardTextStyle.mainContent,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
