@@ -31,7 +31,7 @@ class _NotePageState extends State<NotePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
@@ -88,7 +88,3 @@ class _NotePageState extends State<NotePage> {
     );
   }
 }
-
-
-
-

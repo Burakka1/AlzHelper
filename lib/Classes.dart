@@ -135,37 +135,39 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
     onTap: onTap,
     child: Container(
       padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: AllColors.grey,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            "image",
-            fit: BoxFit.cover,
-            height: 200.0,
+          CircleAvatar(
+            backgroundImage: NetworkImage(doc["relationsImage"]),
+            radius: 50,
           ),
-          const Padding(
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "title",
+              doc["relationsName"],
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "subtitle",
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ))
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              doc["relations"],
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+          )
         ],
       ),
     ),

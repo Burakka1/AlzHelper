@@ -44,4 +44,8 @@ class AuthService {
   }
 
   signInWithEmailAndPassword(String email, String password) {}
+
+  Stream<User?> authStateChanges() {
+    return _auth.authStateChanges();
+  }
 }

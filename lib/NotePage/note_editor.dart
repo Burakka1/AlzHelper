@@ -52,7 +52,6 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,33 +93,31 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              String uid = FirebaseAuth.instance.currentUser!.uid;
-              String noteContent = _mainController.text;
+        onPressed: () async {
+          String uid = FirebaseAuth.instance.currentUser!.uid;
+          String noteContent = _mainController.text;
 
-              // Notu kullanıcının kendi notları koleksiyonuna ekle
-              DocumentReference noteRef = FirebaseFirestore.instance
-                  .collection("Users")
-                  .doc(uid)
-                  .collection("Notes")
-                  .doc(); // Benzersiz bir kimlik değeri oluştur
-              noteId = noteRef.id; // Notun kimlik değerini sakla
+          // Notu kullanıcının kendi notları koleksiyonuna ekle
+          DocumentReference noteRef = FirebaseFirestore.instance
+              .collection("Users")
+              .doc(uid)
+              .collection("Notes")
+              .doc(); // Benzersiz bir kimlik değeri oluştur
+          noteId = noteRef.id; // Notun kimlik değerini sakla
 
-              noteRef.set({
-                "note_title": _titleController.text,
-                "creation_date": date,
-                "note_content": noteContent,
-              }).then((_) {
-                // Eşleşen kullanıcılara notu ekle
-                addNoteToMatchingUsers(noteContent, noteId);
+          noteRef.set({
+            "note_title": _titleController.text,
+            "creation_date": date,
+            "note_content": noteContent,
+          }).then((_) {
+            // Eşleşen kullanıcılara notu ekle
+            addNoteToMatchingUsers(noteContent, noteId);
 
-                Navigator.pop(context);
-              }).catchError((error) => print("$error"));
-            },
-            child: const Icon(Icons.save),
-          ),
-        
-    
+            Navigator.pop(context);
+          }).catchError((error) => print("$error"));
+        },
+        child: const Icon(Icons.save),
+      ),
     );
   }
 }

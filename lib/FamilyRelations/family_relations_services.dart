@@ -12,17 +12,20 @@ class FamilyRelationsEditorModel {
   String relationsName;
   String relations;
   String relationsImage;
+  String FRNumber;
 
   FamilyRelationsEditorModel(
       {required this.relationsName,
       required this.relations,
-      required this.relationsImage});
+      required this.relationsImage,
+      required this.FRNumber});
 
   factory FamilyRelationsEditorModel.formSnapshot(DocumentSnapshot snapshot) {
     return FamilyRelationsEditorModel(
         relationsName: snapshot["relationsName"],
         relations: snapshot["relations"],
-        relationsImage: snapshot["relationsImage"]);
+        relationsImage: snapshot["relationsImage"],
+        FRNumber: snapshot["FRNumber"]);
   }
 }
 
@@ -34,21 +37,25 @@ class FREService {
   FREStorageService _freStorageService = FREStorageService();
   String mediaUrl = "";
 
-  Future<FamilyRelationsEditorModel> addFRE(
-      String relationsName, String relations, PickedFile pickedFile) async {
+  Future<FamilyRelationsEditorModel> addFRE(String relationsName,
+      String relations, XFile pickedFile, String FRNumber) async {
     var ref =
-        _firestore.collection("User").doc(uid).collection("FanilyRelations");
+        _firestore.collection("Users").doc(uid).collection("FamilyRelations");
+
+    mediaUrl = await _freStorageService.uploadMediaFRE(File(pickedFile.path));
 
     var documentRef = await ref.add({
       "relationsName": relationsName,
       "relations": relations,
       "relationsImage": mediaUrl,
+      "frnumber": FRNumber,
     });
 
     return FamilyRelationsEditorModel(
         relations: relations,
         relationsImage: mediaUrl,
-        relationsName: relationsName);
+        relationsName: relationsName,
+        FRNumber: FRNumber);
   }
 }
 

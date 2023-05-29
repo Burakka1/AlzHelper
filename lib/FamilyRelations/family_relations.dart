@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Classes.dart';
 import 'package:flutter_p/FamilyRelations/family_relations_editor.dart';
+import 'package:flutter_p/UI/Home.dart';
+import 'package:flutter_p/UI/Navbar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../NotePage/note_reader.dart';
 
 class family_relations extends StatefulWidget {
@@ -13,7 +18,10 @@ class family_relations extends StatefulWidget {
 }
 
 class _family_relationsState extends State<family_relations> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  //CollectionReference ref =
+  //  _firestore.collection("Users").doc(uid).collection("FamilyRelations");
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +38,14 @@ class _family_relationsState extends State<family_relations> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection("Users")
                       .doc(uid)
-                      .collection("family_relations")
+                      .collection("FamilyRelations")
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -49,15 +57,15 @@ class _family_relationsState extends State<family_relations> {
                       return GridView(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
+                                crossAxisCount: 2, childAspectRatio: 3 / 4),
                         children: snapshot.data!.docs
                             .map((note) => familyRelationsCard(() {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NoteReaderScreen(note),
-                                      ));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Navbar(),
+                                    ),
+                                  );
                                 }, note))
                             .toList(),
                       );
@@ -81,4 +89,13 @@ class _family_relationsState extends State<family_relations> {
       ),
     );
   }
+/*
+  void launchPhoneCall() async {
+    final url = "tel:$ref";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "Arama başlatılamadı: $url";
+    }
+  }*/
 }

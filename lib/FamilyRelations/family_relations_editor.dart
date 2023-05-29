@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,6 +17,7 @@ class FamilyRelationsEditor extends StatefulWidget {
 class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
   TextEditingController _relationsNameController = TextEditingController();
   TextEditingController _relationsController = TextEditingController();
+  TextEditingController _frNumberController = TextEditingController();
   FREService _freService = FREService();
 
   final ImagePicker _pickerImage = ImagePicker();
@@ -122,26 +124,52 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
                                   labelText: "Yakınlık Derecesi",
                                 ),
                               ),
+                              TextFormField(
+                                controller: _frNumberController,
+                                maxLength: 11,
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  labelText: 'Telefon Numarası',
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    _freService
-                                        .addFRE(
-                                            _relationsNameController.text,
-                                            _relationsController.text,
-                                            _pickImage)
-                                        .then((value) {
+                                    if (_relationsNameController.text.isEmpty ||
+                                        _relationsController.text.isEmpty ||
+                                        _frNumberController.text.isEmpty) {
                                       Fluttertoast.showToast(
-                                          msg: "Ekleme Başarılı",
-                                          timeInSecForIosWeb: 2,
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          backgroundColor: Colors.grey[600],
-                                          textColor: Colors.white,
-                                          fontSize: 14);
-                                      Navigator.pop(context);
-                                    });
+                                        msg: 'Lütfen tüm alanları doldurunuz.',
+                                        timeInSecForIosWeb: 2,
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.grey[600],
+                                        textColor: Colors.white,
+                                        fontSize: 14,
+                                      );
+                                    } else {
+                                      _freService
+                                          .addFRE(
+                                              _relationsNameController.text,
+                                              _relationsController.text,
+                                              profileImage ?? '',
+                                              _frNumberController.text)
+                                          .then((value) {
+                                        Fluttertoast.showToast(
+                                            msg: 'Ekleme Başarılı',
+                                            timeInSecForIosWeb: 2,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor: Colors.grey[600],
+                                            textColor: Colors.white,
+                                            fontSize: 14);
+                                        Navigator.pop(context);
+                                      });
+                                    }
                                   },
                                   child: const Text("Ekle"),
                                 ),
