@@ -35,47 +35,51 @@ class _NotePageState extends State<NotePage> {
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("Users")
-                        .doc(uid)
-                        .collection("Notes")
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return GridView(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          children: snapshot.data!.docs
-                              .map((note) => noteCard(() {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NoteReaderScreen(note),
-                                        ));
-                                  }, note))
-                              .toList(),
-                        );
-                      }
-                      return const Text("Henüz not eklemediniz");
-                    }),
-              )
+                  stream: FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(uid)
+                      .collection("Notes")
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      return GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        children: snapshot.data!.docs
+                            .map((note) => noteCard(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NoteReaderScreen(note),
+                                    ),
+                                  );
+                                }, note))
+                            .toList(),
+                      );
+                    }
+                    return const Text("Henüz not eklemediniz");
+                  },
+                ),
+              ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NoteEditorScreen(),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NoteEditorScreen(),
+              ),
+            );
           },
           icon: const Icon(Icons.add),
           label: const Text("Not Ekle"),
@@ -84,3 +88,7 @@ class _NotePageState extends State<NotePage> {
     );
   }
 }
+
+
+
+

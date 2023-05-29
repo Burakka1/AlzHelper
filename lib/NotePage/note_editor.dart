@@ -14,6 +14,45 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   String date = DateTime.now().toString();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _mainController = TextEditingController();
+  late String noteId; // Notun kimlik değerini saklamak için değişken
+
+  void addNoteToMatchingUsers(String noteContent, String noteId) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+
+      String patientID = userSnapshot.get('patientID');
+
+      QuerySnapshot matchingUsersSnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('patientID', isEqualTo: patientID)
+          .get();
+
+      matchingUsersSnapshot.docs.forEach((doc) {
+        String userID = doc.id;
+
+        // Kendi kullanıcısını ekleme
+        if (userID != user.uid) {
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userID)
+              .collection('Notes')
+              .doc(noteId) // Aynı ID'yi kullanarak notu güncelleme
+              .set({
+            "note_title": _titleController.text,
+            "creation_date": date,
+            "note_content": noteContent,
+          });
+        }
+      });
+    }
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,23 +94,33 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          String uid = FirebaseAuth.instance.currentUser!.uid;
-          FirebaseFirestore.instance
-              .collection("Users")
-              .doc(uid)
-              .collection("Notes")
-              .add({
-            "note_title": _titleController.text,
-            "creation_date": date,
-            "note_content": _mainController.text,
-          }).then((value) {
-            print(value.id);
-            Navigator.pop(context);
-          }).catchError((error) => print("$error"));
-        },
-        child: const Icon(Icons.save),
-      ),
+            onPressed: () async {
+              String uid = FirebaseAuth.instance.currentUser!.uid;
+              String noteContent = _mainController.text;
+
+              // Notu kullanıcının kendi notları koleksiyonuna ekle
+              DocumentReference noteRef = FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(uid)
+                  .collection("Notes")
+                  .doc(); // Benzersiz bir kimlik değeri oluştur
+              noteId = noteRef.id; // Notun kimlik değerini sakla
+
+              noteRef.set({
+                "note_title": _titleController.text,
+                "creation_date": date,
+                "note_content": noteContent,
+              }).then((_) {
+                // Eşleşen kullanıcılara notu ekle
+                addNoteToMatchingUsers(noteContent, noteId);
+
+                Navigator.pop(context);
+              }).catchError((error) => print("$error"));
+            },
+            child: const Icon(Icons.save),
+          ),
+        
+    
     );
   }
 }

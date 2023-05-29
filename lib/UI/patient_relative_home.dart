@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Reminders.dart';
 import '../Classes.dart';
@@ -12,6 +14,7 @@ class patient_relative_home extends StatefulWidget {
 }
 
 class _patient_relative_homeState extends State<patient_relative_home> {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,27 +42,59 @@ class _patient_relative_homeState extends State<patient_relative_home> {
           Row(
             children: [
               Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NotePage(),
+                    child: SizedBox(
+                      width: 180,
+                      height: 200,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("Users")
+                            .doc(uid)
+                            .collection("Notes")
+                            .snapshots(),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.hasData &&
+                              snapshot.data!.docs.isNotEmpty) {
+                            final reversedDocs =
+                                snapshot.data!.docs.reversed.toList();
+                            final note = reversedDocs.first;
+                            return noteCard(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const NotePage(),
+                                ),
+                              );
+                            }, note);
+                          }
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NotePage()));
+                            },
+                            child:  Column(
+                              children: [
+                                NotesWidget(
+                                  child: Text(
+                                    "Henüz not eklemediniz",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      NotesWidget(
-                        child: Text(
-                          "Henüz not eklemediniz",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
               Expanded(
                 child: InkWell(
                   onTap: () {
