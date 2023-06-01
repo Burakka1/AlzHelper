@@ -87,20 +87,45 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    10,
-                    (index) => buildCustomCircleAvatar(35, 10, 8),
-                  ),
-                ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(uid)
+                    .collection("FamilyRelations")
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.start, // Resimleri sola hizalar
+                        children: snapshot.data!.docs.map((doc) {
+                          final imageUrl = doc["relationsImage"];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(imageUrl),
+                              radius: 30,
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                  return const Text("Veri bulunamadı");
+                },
               ),
               Container(
                 child: customDivider(),
               ),
-              const SizedBox(height: 10),
-               Row(
+              const SizedBox(height: 5),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
@@ -154,7 +179,7 @@ class _HomeState extends State<Home> {
                                   MaterialPageRoute(
                                       builder: (context) => NotePage()));
                             },
-                            child:  Column(
+                            child: Column(
                               children: [
                                 NotesWidget(
                                   child: Text(

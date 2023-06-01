@@ -20,8 +20,6 @@ class family_relations extends StatefulWidget {
 class _family_relationsState extends State<family_relations> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //CollectionReference ref =
-  //  _firestore.collection("Users").doc(uid).collection("FamilyRelations");
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +87,4 @@ class _family_relationsState extends State<family_relations> {
       ),
     );
   }
-/*
-  void launchPhoneCall() async {
-    final url = "tel:$ref";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw "Arama başlatılamadı: $url";
-    }
-  }*/
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'Home.dart';
 import '../Location/location_permission.dart';
@@ -17,30 +19,68 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   late Timer _timer;
   bool _isSendingLocation = false;
+  int maxDataCount = 10;
 
   Future<void> _sendLocationToFirebase() async {
     try {
       Position position = await getCurrentLocation();
       await saveLocationToFirebase(position);
+      await _limitDataCount();
     } catch (e) {
       print('Hata: $e');
     }
   }
 
-  void _startSendingLocation() {
-    // Konum gönderme işlemini başlat.
-    _timer = Timer.periodic(
-        Duration(minutes: 1), (Timer t) => _sendLocationToFirebase());
-    setState(() {
-      _isSendingLocation = true;
+  Future<void> saveLocationToFirebase(Position position) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference konumlarRef =
+        firestore.collection('Users').doc(uid).collection("Locations");
+    DateTime currentTime = DateTime.now();
+
+    await konumlarRef.add({
+      'latitude': position.latitude,
+      'longitude': position.longitude,
+      'time': currentTime,
     });
   }
 
-  void _stopSendingLocation() {
-    // Konum gönderme işlemini durdur.
-    _timer.cancel();
+  Future<void> _limitDataCount() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference konumlarRef =
+        firestore.collection('Users').doc(uid).collection("Locations");
+
+    QuerySnapshot snapshot =
+        await konumlarRef.orderBy('time', descending: true).get();
+
+    List<QueryDocumentSnapshot> documents = snapshot.docs;
+
+    if (documents.length > maxDataCount) {
+      List<QueryDocumentSnapshot> deleteDocuments =
+          documents.sublist(maxDataCount);
+
+      for (var document in deleteDocuments) {
+        await konumlarRef.doc(document.id).delete();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startSendingLocation();
+  }
+
+  void _startSendingLocation() {
+    // Konum gönderme işlemini başlat.
+    _sendLocationToFirebase(); // İlk konum gönderimi yap
+    _timer = Timer.periodic(
+        Duration(seconds: 10), (Timer t) => _sendLocationToFirebase());
     setState(() {
-      _isSendingLocation = false;
+      _isSendingLocation = true;
     });
   }
 
@@ -48,7 +88,7 @@ class _NavbarState extends State<Navbar> {
   void dispose() {
     super.dispose();
     // Timer'ı iptal et.
-    _timer?.cancel();
+    _timer.cancel();
   }
 
   int currentTab = 0;
@@ -71,14 +111,12 @@ class _NavbarState extends State<Navbar> {
         bucket: bucket,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        child: const Icon(
-          Icons.warning_amber_sharp,
-          color: Colors.black,
-        ),
-        onPressed:
-            _isSendingLocation ? _stopSendingLocation : _startSendingLocation,
-      ),
+          backgroundColor: Colors.red,
+          child: const Icon(
+            Icons.warning_amber_sharp,
+            color: Colors.black,
+          ),
+          onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.grey.shade800,

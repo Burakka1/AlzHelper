@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //Divider çekmek için widget Container( child: customDivider(),),
 Widget customDivider({
@@ -89,7 +90,7 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: AllColors.grey,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(15.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,6 +136,7 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
     onTap: onTap,
     child: Container(
       padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
         color: AllColors.grey,
         borderRadius: BorderRadius.circular(8.0),
@@ -144,10 +146,10 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(doc["relationsImage"]),
-            radius: 50,
+            radius: 40,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
@@ -159,19 +161,30 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              doc["relations"],
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
+          Text(
+            doc["relations"],
+            style: TextStyle(
+              fontSize: 18.0,
             ),
-          )
+          ),
+          TextButton(
+              onPressed: () {
+                makePhoneCall(doc["frnumber"]);
+              },
+              child: Text(doc["frnumber"]))
         ],
       ),
     ),
   );
+}
+
+void makePhoneCall(String phoneNumber) async {
+  String url = 'tel:$phoneNumber';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Arama başlatılamadı: $url';
+  }
 }
 
 // Family Relations class
