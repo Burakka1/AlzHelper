@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Reminders/Reminders.dart';
+import 'package:flutter_p/constants.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../Classes.dart';
 import '../NotePage/notepage.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +20,10 @@ class patient_relative_home extends StatefulWidget {
 
 class _patient_relative_homeState extends State<patient_relative_home> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  final Completer<GoogleMapController> _controller  =Completer();
+  static const LatLng sourceLocation = LatLng(37.4219983, -122.084);
+  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +32,21 @@ class _patient_relative_homeState extends State<patient_relative_home> {
         child: Column(
           children: [
             Center(
-              child: buildCustomCircleAvatar(120, 50, 20),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  radius: 200,
+                  backgroundColor:AllColors.grey,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(target: sourceLocation,zoom: 14.5),
+                    markers: {
+                      Marker(markerId: MarkerId("source"),
+                      position: sourceLocation,),
+                    },
+                  ),
+                  
+                ),
+              ),
             ),
             Container(
               child: customDivider(),
