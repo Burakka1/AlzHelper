@@ -17,7 +17,7 @@ class register_choice extends StatelessWidget {
               height: 200,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/logo.png'),
+                  image: AssetImage('assets/images/AlzhelperLogo.png'),
                   fit: BoxFit.cover,
                 ),
               ),

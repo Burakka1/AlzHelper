@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Login-Register/first_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_p/SplashScreen.dart';
 import 'Services/firebase_options.dart';
 
 void main() async {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: first_screen(),
+      home: SplashScreen(),
     );
   }
 }

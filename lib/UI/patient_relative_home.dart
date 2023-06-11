@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/Reminders/Reminders.dart';
 import 'package:flutter_p/constants.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../Classes.dart';
 import '../NotePage/notepage.dart';
@@ -19,11 +20,77 @@ class patient_relative_home extends StatefulWidget {
 }
 
 class _patient_relative_homeState extends State<patient_relative_home> {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  final Completer<GoogleMapController> _controller  =Completer();
-  static const LatLng sourceLocation = LatLng(37.4219983, -122.084);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
-  
+ String uid = FirebaseAuth.instance.currentUser!.uid;
+  final Completer<GoogleMapController> _controller = Completer();
+  LatLng? sourceLocation;
+  LatLng? destination;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLocations();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        sourceLocation = LatLng(position.latitude, position.longitude);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void onMapCreated(GoogleMapController controller) async {
+    final GoogleMapController mapController = controller;
+    if (sourceLocation != null) {
+      mapController.animateCamera(
+          CameraUpdate.newLatLngZoom(sourceLocation!, 14.5));
+    }
+  }
+
+  Future<void> fetchLocations() async {
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get();
+    final patientID = userSnapshot.get('patientID');
+
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('userType', isEqualTo: 'patient')
+        .where('patientID', isEqualTo: patientID)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final patient = querySnapshot.docs.first;
+      final locationsSnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(patient.id)
+          .collection('Locations')
+          .orderBy('time', descending: true)
+          .limit(1)
+          .get();
+
+      if (locationsSnapshot.docs.isNotEmpty) {
+        final location = locationsSnapshot.docs.first;
+        final latitude = location.get('latitude');
+        final longitude = location.get('longitude');
+
+        setState(() {
+          sourceLocation = LatLng(latitude, longitude);
+          destination = LatLng(latitude, longitude);
+        });
+      }
+    }
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(destination!, 14.5));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,68 +103,81 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   radius: 200,
-                  backgroundColor:AllColors.grey,
+                  backgroundColor: Colors.grey,
                   child: GoogleMap(
-                    initialCameraPosition: CameraPosition(target: sourceLocation,zoom: 14.5),
-                    markers: {
-                      Marker(markerId: MarkerId("source"),
-                      position: sourceLocation,),
+                    initialCameraPosition: CameraPosition(
+                      target: destination ?? LatLng(0, 0),
+                      zoom: 14.5,
+                    ),
+                    markers: Set<Marker>.from([
+                      if (sourceLocation != null)
+                        Marker(
+                          markerId: MarkerId("source"),
+                          position: sourceLocation!,
+                          infoWindow: InfoWindow(title: "Konum'um"),
+                        ),
+                      if (destination != null)
+                        Marker(
+                          markerId: MarkerId("destination"),
+                          position: destination!,
+                           icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueAzure,
+                          ),
+                          infoWindow: InfoWindow(title: "Hasta'ya ait konum"),
+                        ),
+                    ]),
+                    onMapCreated: (GoogleMapController controller) {
+                      onMapCreated(controller);
+                      _controller.complete(controller);
                     },
                   ),
-                  
                 ),
               ),
             ),
             Container(
-              child: customDivider(),
+              child: const Divider(),
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(uid)
-                  .collection('Locations')
-                  .orderBy('time', descending: true)
-                  .limit(2)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Veri alınamadı');
-                } else if (!snapshot.hasData) {
-                  return Text('Veri bulunamadı');
-                } else {
-                  QuerySnapshot locationSnapshot = snapshot.data!;
-                  List<QueryDocumentSnapshot> locationDocuments =
-                      locationSnapshot.docs;
-
-                  List<Widget> locationTextWidgets =
-                      locationDocuments.map((doc) {
-                    double latitude = doc.get('latitude');
-                    double longitude = doc.get('longitude');
-                    return Text(
-                      '$latitude, $longitude',
-                      style: TextStyle(fontSize: 18),
-                    );
-                  }).toList();
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: locationTextWidgets,
-                  );
-                }
-              },
-            ),
+            
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
               children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'Kartlar',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                
+                Column(
+                  children: [
+                    Text(
+                      '  Kartlar',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () async {
+                    _getCurrentLocation();
+                    final GoogleMapController controller =
+                        await _controller.future;
+                    controller.animateCamera(
+                        CameraUpdate.newLatLng(destination!));
+                  },
+                  icon: Icon(Icons.add_location),
+                  tooltip: 'Konumumu Bul',
+                ),
+                IconButton(
+                  onPressed: () async {
+                    if (sourceLocation != null) {
+                      final GoogleMapController controller =
+                          await _controller.future;
+                      controller.animateCamera(
+                          CameraUpdate.newLatLng(sourceLocation!));
+                    }
+                  },
+                  icon: Icon(Icons.place),
+                  tooltip: 'Hasta Konumunu Bul',
+                ),
+                
               ],
             ),
             Row(
@@ -156,6 +236,7 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                     ),
                   ),
                 ),
+                SizedBox(width: 16.0), // Add spacing between the buttons
                 Expanded(
                   child: InkWell(
                     onTap: () {

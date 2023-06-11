@@ -129,7 +129,7 @@ class _registerState extends State<patient_register> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: AssetImage(
-                                'assets/images/logo.png'), // Logo resmi
+                                'assets/images/AlzhelperLogo.png'), // Logo resmi
                           ),
                         ),
                       ),

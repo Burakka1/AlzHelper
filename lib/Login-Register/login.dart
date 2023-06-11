@@ -16,7 +16,7 @@ class patient_login extends StatefulWidget {
 }
 
 class _patient_loginState extends State<patient_login> {
-  final TextEditingController _emailController = TextEditingController();
+ final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   AuthService _authService = AuthService();
   String _errorMessage = '';
@@ -24,7 +24,7 @@ class _patient_loginState extends State<patient_login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300], // Arkaplan rengi
+      backgroundColor: Colors.grey[300],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -51,7 +51,7 @@ class _patient_loginState extends State<patient_login> {
                     color: Colors.white,
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('assets/images/logo.png'), // Logo resmi
+                      image: AssetImage('assets/images/AlzhelperLogo.png'),
                     ),
                   ),
                 ),
@@ -87,7 +87,7 @@ class _patient_loginState extends State<patient_login> {
                       } else {
                         _authService.signIn(email, password).then((user) {
                           if (user != null) {
-                            redirectUser();
+                            redirectUser(user.uid);
                           }
                         }).catchError((error) {
                           String errorMessage = error.toString();
@@ -129,10 +129,7 @@ class _patient_loginState extends State<patient_login> {
     );
   }
 
-  void redirectUser() async {
-    // Kullanıcının UID'sini alın
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
+  void redirectUser(String userId) async {
     // Firebase Firestore ile kullanıcının verilerini çekin
     DocumentSnapshot snapshot =
         await FirebaseFirestore.instance.collection('Users').doc(userId).get();
