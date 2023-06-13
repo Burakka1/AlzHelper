@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'Home.dart';
 import '../Location/location_permission.dart';
-import '../Profile.dart';
+import '../Profilepage/Profile.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({Key? key}) : super(key: key);

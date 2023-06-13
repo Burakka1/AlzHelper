@@ -20,7 +20,7 @@ class patient_relative_home extends StatefulWidget {
 }
 
 class _patient_relative_homeState extends State<patient_relative_home> {
- String uid = FirebaseAuth.instance.currentUser!.uid;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   final Completer<GoogleMapController> _controller = Completer();
   LatLng? sourceLocation;
   LatLng? destination;
@@ -47,16 +47,14 @@ class _patient_relative_homeState extends State<patient_relative_home> {
   void onMapCreated(GoogleMapController controller) async {
     final GoogleMapController mapController = controller;
     if (sourceLocation != null) {
-      mapController.animateCamera(
-          CameraUpdate.newLatLngZoom(sourceLocation!, 14.5));
+      mapController
+          .animateCamera(CameraUpdate.newLatLngZoom(sourceLocation!, 14.5));
     }
   }
 
   Future<void> fetchLocations() async {
-    final userSnapshot = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
     final patientID = userSnapshot.get('patientID');
 
     final querySnapshot = await FirebaseFirestore.instance
@@ -120,7 +118,7 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                         Marker(
                           markerId: MarkerId("destination"),
                           position: destination!,
-                           icon: BitmapDescriptor.defaultMarkerWithHue(
+                          icon: BitmapDescriptor.defaultMarkerWithHue(
                             BitmapDescriptor.hueAzure,
                           ),
                           infoWindow: InfoWindow(title: "Hasta'ya ait konum"),
@@ -137,11 +135,10 @@ class _patient_relative_homeState extends State<patient_relative_home> {
             Container(
               child: const Divider(),
             ),
-            
             Row(
-              mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
+              mainAxisAlignment:
+                  MainAxisAlignment.end, // Align buttons to the right
               children: [
-                
                 Column(
                   children: [
                     Text(
@@ -159,8 +156,8 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                     _getCurrentLocation();
                     final GoogleMapController controller =
                         await _controller.future;
-                    controller.animateCamera(
-                        CameraUpdate.newLatLng(destination!));
+                    controller
+                        .animateCamera(CameraUpdate.newLatLng(destination!));
                   },
                   icon: Icon(Icons.add_location),
                   tooltip: 'Konumumu Bul',
@@ -177,7 +174,6 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                   icon: Icon(Icons.place),
                   tooltip: 'Hasta Konumunu Bul',
                 ),
-                
               ],
             ),
             Row(

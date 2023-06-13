@@ -43,7 +43,7 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
               bottom: 0,
               right: 0,
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/AlzhelperLogo.png"),
+                backgroundImage: AssetImage("assets/images/person.png"),
               ),
             ),
           ],
@@ -52,7 +52,7 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
         return Stack(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage("assets/images/AlzhelperLogo.png"),
+              backgroundImage: AssetImage("assets/images/person.png"),
               radius: height * 0.08,
             ),
             Positioned(
@@ -68,7 +68,7 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
                   );
                 },
                 child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/AlzhelperLogo.png"),
+                  backgroundImage: AssetImage("assets/images/editphoto.png"),
                 ),
               ),
             ),
@@ -197,12 +197,12 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
         children: [
           InkWell(
             onTap: () => _onImageButtonPressed(ImageSource.camera),
-            child: _buildOptionBox('assets/images/AlzhelperLogo.png'),
+            child: _buildOptionBox('assets/images/camera.png'),
           ),
           const SizedBox(width: 16),
           InkWell(
             onTap: () => _onImageButtonPressed(ImageSource.gallery),
-            child: _buildOptionBox('assets/images/AlzhelperLogo.png'),
+            child: _buildOptionBox('assets/images/gallery.png'),
           ),
         ],
       ),

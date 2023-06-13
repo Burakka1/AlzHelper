@@ -57,14 +57,7 @@ class _family_relationsState extends State<family_relations> {
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2, childAspectRatio: 3 / 4),
                         children: snapshot.data!.docs
-                            .map((note) => familyRelationsCard(() {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Navbar(),
-                                    ),
-                                  );
-                                }, note))
+                            .map((note) => familyRelationsCard(() {}, note))
                             .toList(),
                       );
                     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/UI/patient_relative_home.dart';
-import '../Profile.dart';
+import '../Profilepage/Profile.dart';
 
 class Navbar1 extends StatefulWidget {
   const Navbar1({Key? key}) : super(key: key);
