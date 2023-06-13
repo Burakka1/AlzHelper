@@ -1,13 +1,16 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_p/UI/patient_relative_home.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'Home.dart';
 import '../Location/location_permission.dart';
 import '../Profilepage/Profile.dart';
+import 'package:http/http.dart' as http;
 
 class Navbar extends StatefulWidget {
   const Navbar({Key? key}) : super(key: key);
@@ -72,6 +75,42 @@ class _NavbarState extends State<Navbar> {
   void initState() {
     super.initState();
     _startSendingLocation();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      String? title = message.notification!.title;
+      String? body = message.notification!.body;
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 123,
+          channelKey: 'noti',
+          color: Colors.white,
+          title: title,
+          body: body,
+          category: NotificationCategory.Call,
+          wakeUpScreen: true,
+          fullScreenIntent: true,
+          autoDismissible: false,
+          backgroundColor: Colors.orange,
+        ),
+        actionButtons: [
+          NotificationActionButton(
+            key: 'ACCEPT',
+            label: 'Anlaşıldı',
+            color: Colors.green,
+            autoDismissible: true,
+          ),
+        ],
+      );
+      AwesomeNotifications().actionStream.listen((event) {
+        if (event.buttonKeyPressed == 'REJECT') {
+          print('Call Reject');
+        } else if (event.buttonKeyPressed == 'ACCEPT') {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => patient_relative_home()));
+        } else {
+          print('Clicked on Notification');
+        }
+      });
+    });
   }
 
   void _startSendingLocation() {
@@ -116,7 +155,9 @@ class _NavbarState extends State<Navbar> {
             Icons.warning_amber_sharp,
             color: Colors.black,
           ),
-          onPressed: () {}),
+          onPressed: () {
+            sendPushNotification();
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.grey.shade800,
@@ -180,5 +221,37 @@ class _NavbarState extends State<Navbar> {
         ),
       ),
     );
+  }
+
+  Future<void> sendPushNotification() async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAA-DKR914:APA91bHaOoKB1oXJ2EP7JcLsrlFGMGmWaIrZCTGVfJTv8Hubi4A22cu8ygc-cfDYTuCQbuqzOPb1gA0wiQ1YmusPNKu4k9RY7g7JGJbkRjHPE3BbJecoonLh-PS7qD1UWG5wHxEEbHnX',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': 'Acil durum',
+              'title': 'Ulaşım sağlayın',
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            'to':
+                'dCyUOXtGRGifUYuWqVsnHX:APA91bFNkujr9NkkTJLlph5R1UkVPE3biQlxQFF0RSq-FjPbdIHtbinNsb3WUfy2de8MVo3dmoCMnse5e_L2bCBJl0RP8L9ro0l2Aa7TY7nDFh291lWfIFxBSDoQfBu1kvgTDmqXwEkR',
+          },
+        ),
+      );
+      response;
+    } catch (e) {
+      e;
+    }
   }
 }

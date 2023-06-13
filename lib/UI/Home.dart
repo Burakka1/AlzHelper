@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/FamilyRelations/family_relations.dart';
 import 'package:flutter_p/NotePage/notepage.dart';
@@ -194,10 +195,17 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 200,
-                    width: 180,
-                  )
+                  InkWell(
+                    onTap: () async {
+                      String? token =
+                          await FirebaseMessaging.instance.getToken();
+                      print(token);
+                    },
+                    child: SizedBox(
+                      height: 200,
+                      width: 180,
+                    ),
+                  ),
                 ],
               )
             ],

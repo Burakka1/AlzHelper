@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Reminders/Reminders.dart';
 import 'package:flutter_p/constants.dart';
@@ -245,10 +246,17 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                     },
                     child: Column(
                       children: [
-                        NotesWidget(
-                          child: Text(
-                            "Henüz hatırlatıcı eklemediniz",
-                            style: TextStyle(fontSize: 18),
+                        InkWell(
+                          onTap: () async {
+                            String? token =
+                                await FirebaseMessaging.instance.getToken();
+                            print(token);
+                          },
+                          child: NotesWidget(
+                            child: Text(
+                              "Henüz hatırlatıcı eklemediniz",
+                              style: TextStyle(fontSize: 18),
+                            ),
                           ),
                         ),
                       ],
