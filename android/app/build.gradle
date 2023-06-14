@@ -27,7 +27,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -48,7 +47,7 @@ android {
        multiDexEnabled true
 
        //minSdkVersion flutter.minSdkVersion
-       targetSdkVersion 33
+       targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -71,5 +70,4 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
  implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.firebase:firebase-analytics'
 }

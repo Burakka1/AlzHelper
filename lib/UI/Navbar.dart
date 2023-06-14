@@ -98,10 +98,16 @@ class _NavbarState extends State<Navbar> {
             color: Colors.green,
             autoDismissible: true,
           ),
+          NotificationActionButton(
+            key: 'CLOSE',
+            label: 'Kapat',
+            color: Colors.green,
+            autoDismissible: true,
+          ),
         ],
       );
       AwesomeNotifications().actionStream.listen((event) {
-        if (event.buttonKeyPressed == 'REJECT') {
+        if (event.buttonKeyPressed == 'CLOSE') {
           print('Call Reject');
         } else if (event.buttonKeyPressed == 'ACCEPT') {
           Navigator.push(context,
@@ -245,7 +251,7 @@ class _NavbarState extends State<Navbar> {
               'status': 'done'
             },
             'to':
-                'ehDPwhWRQRywzoCuP3xhGV:APA91bGBFZmGqz-1MnPgh6BckMPjfSW-8dHlhm4pRLR3mpQaq-_RP4GfMyeK_0HPR3WWQJ5sCvLnffiW5LNqoW6FleczGcqsGjUfikLGq9uUcbBpJWEdoVWyv6e2lsd9QRDGM3flaKmw',
+                'e2XtW3GaR522gAtrS655Jg:APA91bFwEK-z9qb7j6pxacvynQ9NerkKePFVgjZqGvbKLZ7BMQYcs1wIS3pqZ26-xmF0kCH3yLi5lted4GbnNUs3NrFxpcVmISpZJqn1ujMDfkoaTd2FAOehBmMJjyBe8sQCbtRXFGBw',
           },
         ),
       );
