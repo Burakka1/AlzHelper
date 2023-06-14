@@ -8,6 +8,8 @@ import 'package:flutter_p/Services/auth.dart';
 import 'package:flutter_p/UI/patient_relative_home.dart';
 import 'package:flutter_p/UI/patient_relative_navbar.dart';
 
+import '../Classes.dart';
+
 class patient_login extends StatefulWidget {
   const patient_login({Key? key}) : super(key: key);
 
@@ -24,6 +26,11 @@ class _patient_loginState extends State<patient_login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
       backgroundColor: Colors.grey[300],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

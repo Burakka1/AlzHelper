@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_p/Classes.dart';
 import 'package:flutter_p/Login-Register/first_screen.dart';
 import 'package:flutter_p/Profilepage/editprofile.dart';
@@ -29,16 +30,13 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Profil"),
-        ),
+        appBar: MyAppBar(title: 'AlzHelper', actions: [],),
         body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: _profileStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final profileData = snapshot.data!.data();
-              late String _profileImage;
-              _profileImage = profileData?['profileImage'] ?? '';
+              String _profileImage = profileData?['profileImage'] ?? '';
 
               return Center(
                 child: Column(
@@ -48,20 +46,22 @@ class _ProfileState extends State<Profile> {
                     ),
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(_profileImage),
+                      backgroundImage: _profileImage.isNotEmpty
+                          ? NetworkImage(_profileImage)
+                          : null,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
                     Container(
-                      child: customDivider(),
+                      child: const Divider(),
                     ),
                     Text(
-                      "${profileData?['description']}",
-                      style: TextStyle(fontSize: 16),
+                      " ${profileData?['description'] ?? 'Belirtilmedi'}",
+                      style: const TextStyle(fontSize: 16),
                     ),
                     Container(
-                      child: customDivider(),
+                      child: const Divider(),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -106,7 +106,7 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
-                                " ${profileData?['firstName']}",
+                                 " ${profileData?['firstName'] ?? 'Belirtilmedi'}",
                                 style: const TextStyle(fontSize: 16),
                               )
                             ],
@@ -122,7 +122,7 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
-                                "  ${profileData?['lastName']}",
+                                " ${profileData?['lastName'] ?? 'Belirtilmedi'}",
                                 style: const TextStyle(fontSize: 16),
                               )
                             ],
@@ -138,7 +138,7 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
-                                "  ${profileData?['age']}",
+                                " ${profileData?['age'] ?? 'Belirtilmedi'}",
                                 style: const TextStyle(fontSize: 16),
                               )
                             ],
@@ -154,7 +154,7 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
-                                "  ${profileData?['phoneNumber']}",
+                                " ${profileData?['phoneNumber'] ?? 'Belirtilmedi'}",
                                 style: const TextStyle(fontSize: 16),
                               )
                             ],
@@ -164,22 +164,67 @@ class _ProfileState extends State<Profile> {
                           ),
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 "Kan Grubu: ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
-                                "  ${profileData?['bloodGroup']}",
+                                " ${profileData?['bloodGroup'] ?? 'Belirtilmedi'}",
                                 style: const TextStyle(fontSize: 16),
                               )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                "Hasta ID:",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                                    
+                              ),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Clipboard.setData(
+                                        ClipboardData(text: "${profileData?['patientID']}"),
+                                      );
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: const Text("Patient ID kopyalandı")),
+                                      );
+                                    },
+                                    child: Text(
+                                      "${profileData?['patientID']}",
+                                      style: const TextStyle(fontSize: 16),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.content_copy),
+                                onPressed: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: "${profileData?['patientID']}"),
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: const Text("Patient ID kopyalandı")),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      child: customDivider(),
+                      child: const Divider(),
                     ),
                     TextButton(
                       onPressed: signOut,
@@ -190,11 +235,11 @@ class _ProfileState extends State<Profile> {
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: Text('Veriler çekilirken bir hata oluştu.'),
+                child: const Text('Veriler çekilirken bir hata oluştu.'),
               );
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               );
             }
           },

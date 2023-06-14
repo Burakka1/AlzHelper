@@ -19,11 +19,11 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          title: const Text("Notlarım"),
-          centerTitle: true,
-        ),
+        appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

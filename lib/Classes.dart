@@ -131,52 +131,127 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
   );
 }
 
-Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc) {
-  return InkWell(
-    onTap: onTap,
-    child: Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        color: AllColors.grey,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(doc["relationsImage"]),
-            radius: 40,
+Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc, String uid) {
+  return Stack(
+    children: [
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity, // Kartın genişliğini ayarlayın
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(4.0),
+          decoration: BoxDecoration(
+            color: AllColors.grey,
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          SizedBox(
-            height: 5,
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              doc["relationsName"],
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(doc["relationsImage"]),
+                radius: 40,
               ),
-            ),
+              SizedBox(height: 5),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  doc["relationsName"],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                doc["relations"],
+                style: TextStyle(
+                  fontSize: 18.0,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  makePhoneCall(doc["frnumber"]);
+                },
+                child: Text(doc["frnumber"]),
+              ),
+            ],
           ),
-          Text(
-            doc["relations"],
-            style: TextStyle(
-              fontSize: 18.0,
-            ),
-          ),
-          TextButton(
-              onPressed: () {
-                makePhoneCall(doc["frnumber"]);
-              },
-              child: Text(doc["frnumber"]))
-        ],
+        ),
       ),
-    ),
+      Positioned(
+        top: 8,
+        right: 8,
+        child: GestureDetector(
+          onTap: () {
+            // Silme işlemini burada gerçekleştirin
+            FirebaseFirestore.instance
+                .collection("Users")
+                .doc(uid)
+                .collection("FamilyRelations")
+                .doc(doc.id)
+                .delete();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: AllColors.grey,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.delete,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    ],
   );
 }
+
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final List<Widget> actions;
+  final bool showBackButton; // Geri butonunu göstermek için bir bayrak
+
+  const MyAppBar({
+    Key? key,
+    required this.title,
+    required this.actions,
+    this.showBackButton = false, // Varsayılan değer olarak geri butonunu gizle
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      centerTitle: true,
+      leading: showBackButton
+          ? IconButton(
+              icon:Icon(Icons.arrow_back,color: Colors.red,),
+              onPressed: () {
+                Navigator.pop(context); // Geri butonuna basıldığında bir önceki sayfaya dön
+              },
+            )
+          : null, // Geri butonunu göstermek istemediğiniz sayfalarda leading'i null olarak bırakın
+      actions: actions,
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+
+
+
+
+
 
 void makePhoneCall(String phoneNumber) async {
   String url = 'tel:$phoneNumber';

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Classes.dart';
 import 'family_relations_services.dart';
 
 class FamilyRelationsEditor extends StatefulWidget {
@@ -81,8 +82,10 @@ class _FamilyRelationsEditorState extends State<FamilyRelationsEditor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Aile Yakını Ekle"),
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
       ),
       body: SafeArea(
         child: Center(

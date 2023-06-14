@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Login-Register/patient_register.dart';
 import 'package:flutter_p/Login-Register/patient_relative_register.dart';
+import '../Classes.dart';
 import 'login.dart';
 
 class register_choice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
       backgroundColor: Colors.grey[200],
       body: Center(
         child: Column(

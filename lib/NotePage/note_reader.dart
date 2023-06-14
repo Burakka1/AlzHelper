@@ -47,14 +47,13 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        actions: [
-          IconButton(
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [IconButton(
             onPressed: deleteNote,
             icon: Icon(Icons.delete),
-          ),
-        ],
+          ),],
+        showBackButton: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

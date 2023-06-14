@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
+import '../Classes.dart';
 
 class AddPatientPage extends StatefulWidget {
   const AddPatientPage({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class AddPatientPage extends StatefulWidget {
 
 class _AddPatientPageState extends State<AddPatientPage> {
   File? _profileImage;
+  String? _profileImageUrl; // Profil resim URL'sini tutmak için değişken
   final picker = ImagePicker();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Stream<DocumentSnapshot<Map<String, dynamic>>>? _profileStream;
@@ -49,9 +52,11 @@ class _AddPatientPageState extends State<AddPatientPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Profil Düzenle"),
-        ),
+              appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
         body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: _profileStream,
           builder: (context, snapshot) {
@@ -89,6 +94,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
                                             profileData?['profileImage'],
                                             fit: BoxFit.cover,
                                           )
+                                          
                                         : Container(),
                               ),
                             ),
@@ -218,6 +224,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
       'age': int.parse(_ageController.text),
       'phoneNumber': _phoneNumberController.text,
       'bloodGroup': _bloodGroupController.text,
+      'profileImage': _profileImageUrl, // Profil resim URL'sini kaydet
     }).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Hasta bilgileri güncellendi')),
@@ -269,6 +276,22 @@ class _AddPatientPageState extends State<AddPatientPage> {
       setState(() {
         _profileImage = File(pickedImage.path);
       });
+      _uploadImage(); // Resim seçildikten sonra yükleme işlemini başlat
     }
+  }
+
+  Future<void> _uploadImage() async {
+    String uid = _auth.currentUser!.uid;
+    String fileName = 'profile_$uid.jpg';
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child('profile_images').child(fileName);
+    UploadTask uploadTask = storageReference.putFile(_profileImage!);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+
+    setState(() {
+      _profileImageUrl = downloadUrl;
+    });
   }
 }
