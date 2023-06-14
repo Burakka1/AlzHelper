@@ -104,8 +104,10 @@ class _NavbarState extends State<Navbar> {
         if (event.buttonKeyPressed == 'REJECT') {
           print('Call Reject');
         } else if (event.buttonKeyPressed == 'ACCEPT') {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => patient_relative_home()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => patient_relative_home()),
+          );
         } else {
           print('Clicked on Notification');
         }
@@ -117,7 +119,9 @@ class _NavbarState extends State<Navbar> {
     // Konum gönderme işlemini başlat.
     _sendLocationToFirebase(); // İlk konum gönderimi yap
     _timer = Timer.periodic(
-        Duration(seconds: 10), (Timer t) => _sendLocationToFirebase());
+      Duration(seconds: 10),
+      (Timer t) => _sendLocationToFirebase(),
+    );
     setState(() {
       _isSendingLocation = true;
     });
@@ -144,84 +148,65 @@ class _NavbarState extends State<Navbar> {
   }
 
   Scaffold navbar() {
-    return Scaffold(
-      body: PageStorage(
-        child: currentScreen,
-        bucket: bucket,
-      ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
-          child: const Icon(
-            Icons.warning_amber_sharp,
-            color: Colors.black,
+  return Scaffold(
+    body: PageStorage(
+      child: currentScreen,
+      bucket: bucket,
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    bottomNavigationBar: BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.grey.shade800,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
+      selectedFontSize: 12,
+      unselectedFontSize: 12,
+      currentIndex: currentTab,
+      onTap: (index) {
+        setState(() {
+          currentTab = index;
+          currentScreen = screens[currentTab];
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home_outlined,
+            size: 35,
           ),
-          onPressed: () {
-            sendPushNotification();
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey.shade800,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const Home();
-                        currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home_outlined,
-                          size: 35,
-                          color: currentTab == 0 ? Colors.white : Colors.grey,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const Profile();
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.person_outlined,
-                          size: 35,
-                          color: currentTab == 1 ? Colors.white : Colors.grey,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+          label: 'Home',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person_outlined,
+            size: 35,
+          ),
+          label: 'Profile',
+        ),
+      ],
+    ),
+    floatingActionButton: Container(
+      width: 70,
+      height: 70,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.red,
+        border: Border.all(color: Colors.grey.shade800,width: 6),
       ),
-    );
-  }
+      child: FloatingActionButton(
+        backgroundColor: Colors.transparent,
+        child: const Icon(
+          Icons.notifications,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          sendPushNotification();
+        },
+      ),
+    ),
+  );
+}
+
 
   Future<void> sendPushNotification() async {
     try {
@@ -242,7 +227,7 @@ class _NavbarState extends State<Navbar> {
             'data': <String, dynamic>{
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'id': '1',
-              'status': 'done'
+              'status': 'done',
             },
             'to':
                 'ehDPwhWRQRywzoCuP3xhGV:APA91bGBFZmGqz-1MnPgh6BckMPjfSW-8dHlhm4pRLR3mpQaq-_RP4GfMyeK_0HPR3WWQJ5sCvLnffiW5LNqoW6FleczGcqsGjUfikLGq9uUcbBpJWEdoVWyv6e2lsd9QRDGM3flaKmw',

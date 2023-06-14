@@ -223,7 +223,7 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                               NotesWidget(
                                 child: Text(
                                   "Henüz not eklemediniz",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               )
                             ],
@@ -255,7 +255,7 @@ class _patient_relative_homeState extends State<patient_relative_home> {
                           child: NotesWidget(
                             child: Text(
                               "Henüz hatırlatıcı eklemediniz",
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 15),
                             ),
                           ),
                         ),

@@ -40,40 +40,73 @@ class _family_relationsState extends State<family_relations> {
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("Users")
-                      .doc(uid)
-                      .collection("FamilyRelations")
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      return GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, childAspectRatio: 3 / 4),
-                        children: snapshot.data!.docs
-                            .map((note) => familyRelationsCard(() {}, note))
-                            .toList(),
-                      );
-                    }
-                    return const Text("Henüz eklemediniz");
-                  }),
-            )
+                stream: FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(uid)
+                    .collection("FamilyRelations")
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3/4,
+                        crossAxisSpacing: 16.0,
+                      ),
+                      children: snapshot.data!.docs.map(
+                        (note) {
+                          return Stack(
+                            children: [
+                              familyRelationsCard(() {}, note, uid),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Silme işlemini burada gerçekleştirin
+                                    _firestore
+                                        .collection("Users")
+                                        .doc(uid)
+                                        .collection("FamilyRelations")
+                                        .doc(note.id)
+                                        .delete();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ).toList(),
+                    );
+                  }
+                  return const Text("Henüz eklemediniz");
+                },
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FamilyRelationsEditor(),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) => FamilyRelationsEditor(),
+            ),
+          );
         },
         icon: const Icon(Icons.add),
         label: const Text("Oluştur"),

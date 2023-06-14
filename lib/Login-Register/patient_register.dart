@@ -17,7 +17,20 @@ class _registerState extends State<patient_register> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  String _errorMessage = '';
+
   void signUserUp() async {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _firstNameController.text.isEmpty ||
+        _lastNameController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Lütfen bütün alanları doldurunuz")),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -26,11 +39,12 @@ class _registerState extends State<patient_register> {
         );
       },
     );
+
     // UUID nesnesi oluştur
     var uuid = const Uuid();
     // Yeni bir benzersiz rastgele sayı oluştur
     String randomNumber = uuid.v4();
-    String patient = "Patient";
+    String patient = "patient";
 
     try {
       if (_passwordController.text == _confirmPasswordController.text) {
@@ -51,18 +65,19 @@ class _registerState extends State<patient_register> {
         await UsersRef.doc(uid).set(SetData);
       } else {
         showDialog(
-            context: context,
-            builder: (context) {
-              return const AlertDialog(
-                backgroundColor: Colors.deepPurple,
-                title: Center(
-                  child: Text(
-                    "Şifre Eşleşmedi Tekrar Deneyiniz",
-                    style: TextStyle(color: Colors.white),
-                  ),
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              backgroundColor: Colors.deepPurple,
+              title: Center(
+                child: Text(
+                  "Şifre Eşleşmedi Tekrar Deneyiniz",
+                  style: TextStyle(color: Colors.white),
                 ),
-              );
-            });
+              ),
+            );
+          },
+        );
       }
 
       Navigator.pop(context);
@@ -92,13 +107,10 @@ class _registerState extends State<patient_register> {
     Navigator.pop(context);
   }
 
-  AuthService _authService = AuthService();
-  String _errorMessage = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300], // Arkaplan rengi
+      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -129,7 +141,7 @@ class _registerState extends State<patient_register> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: AssetImage(
-                                'assets/images/AlzhelperLogo.png'), // Logo resmi
+                                'assets/images/AlzhelperLogo.png'),
                           ),
                         ),
                       ),

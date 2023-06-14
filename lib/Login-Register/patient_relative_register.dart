@@ -17,7 +17,21 @@ class _registerState extends State<patient_relative_register> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  String _errorMessage = '';
+
   void signUserUp() async {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _firstNameController.text.isEmpty ||
+        _lastNameController.text.isEmpty ||
+        _patientID.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Lütfen bütün alanları doldurunuz")),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -47,18 +61,19 @@ class _registerState extends State<patient_relative_register> {
         await UsersRef.doc(uid).set(SetData);
       } else {
         showDialog(
-            context: context,
-            builder: (context) {
-              return const AlertDialog(
-                backgroundColor: Colors.deepPurple,
-                title: Center(
-                  child: Text(
-                    "Şifre Eşleşmedi Tekrar Deneyiniz",
-                    style: TextStyle(color: Colors.white),
-                  ),
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              backgroundColor: Colors.deepPurple,
+              title: Center(
+                child: Text(
+                  "Şifre Eşleşmedi Tekrar Deneyiniz",
+                  style: TextStyle(color: Colors.white),
                 ),
-              );
-            });
+              ),
+            );
+          },
+        );
       }
 
       Navigator.pop(context);
@@ -89,7 +104,6 @@ class _registerState extends State<patient_relative_register> {
   }
 
   AuthService _authService = AuthService();
-  String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -214,3 +228,25 @@ class _registerState extends State<patient_relative_register> {
     );
   }
 }
+
+class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // sign up with email and password
+  Future<UserCredential> signUpWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      return await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+}
+
+
+
+
+
