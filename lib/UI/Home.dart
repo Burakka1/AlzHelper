@@ -57,6 +57,7 @@ class _HomeState extends State<Home> {
     var Docref = UsersRef.doc(uid);
     return SafeArea(
       child: Scaffold(
+        appBar: MyAppBar(title: 'AlzHelper', actions: [],),
         body: SingleChildScrollView(
           child: Column(
             children: [

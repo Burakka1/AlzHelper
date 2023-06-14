@@ -93,7 +93,7 @@ class _patient_relative_homeState extends State<patient_relative_home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: MyAppBar(title: 'AlzHelper', actions: [],),
       body: SingleChildScrollView(
         child: Column(
           children: [

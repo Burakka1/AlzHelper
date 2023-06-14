@@ -24,10 +24,10 @@ class _family_relationsState extends State<family_relations> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        title: const Text("Aile Yakınları"),
-        centerTitle: true,
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

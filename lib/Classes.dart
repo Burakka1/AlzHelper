@@ -207,6 +207,50 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc, String 
   );
 }
 
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final List<Widget> actions;
+  final bool showBackButton; // Geri butonunu göstermek için bir bayrak
+
+  const MyAppBar({
+    Key? key,
+    required this.title,
+    required this.actions,
+    this.showBackButton = false, // Varsayılan değer olarak geri butonunu gizle
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      centerTitle: true,
+      leading: showBackButton
+          ? IconButton(
+              icon:Icon(Icons.arrow_back,color: Colors.red,),
+              onPressed: () {
+                Navigator.pop(context); // Geri butonuna basıldığında bir önceki sayfaya dön
+              },
+            )
+          : null, // Geri butonunu göstermek istemediğiniz sayfalarda leading'i null olarak bırakın
+      actions: actions,
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+
+
+
+
 
 
 void makePhoneCall(String phoneNumber) async {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../Classes.dart';
 import '../Services/auth.dart';
 
 class patient_relative_register extends StatefulWidget {
@@ -108,6 +109,11 @@ class _registerState extends State<patient_relative_register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(

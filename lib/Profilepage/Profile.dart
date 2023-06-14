@@ -30,9 +30,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Profil"),
-        ),
+        appBar: MyAppBar(title: 'AlzHelper', actions: [],),
         body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: _profileStream,
           builder: (context, snapshot) {

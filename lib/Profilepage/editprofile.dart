@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Classes.dart';
+
 class AddPatientPage extends StatefulWidget {
   const AddPatientPage({Key? key}) : super(key: key);
 
@@ -50,9 +52,11 @@ class _AddPatientPageState extends State<AddPatientPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Profil Düzenle"),
-        ),
+              appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
         body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: _profileStream,
           builder: (context, snapshot) {
@@ -90,6 +94,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
                                             profileData?['profileImage'],
                                             fit: BoxFit.cover,
                                           )
+                                          
                                         : Container(),
                               ),
                             ),

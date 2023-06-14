@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Login-Register/patient_register.dart';
 import 'package:flutter_p/Login-Register/register_choice.dart';
+import '../Classes.dart';
 import '../UI/Navbar.dart';
 import '../UI/patient_relative_navbar.dart';
 import 'login.dart';
@@ -25,6 +26,11 @@ class first_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+        showBackButton: true,
+      ),
       backgroundColor: Colors.grey[200],
       body: Center(
         child: Column(
