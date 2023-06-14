@@ -25,12 +25,38 @@ class _patient_relative_homeState extends State<patient_relative_home> {
   final Completer<GoogleMapController> _controller = Completer();
   LatLng? sourceLocation;
   LatLng? destination;
+  String? token;
 
   @override
   void initState() {
     super.initState();
     fetchLocations();
     _getCurrentLocation();
+    getToken();
+  }
+
+  Future<void> getToken() async {
+    token = await FirebaseMessaging.instance.getToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // Firestore kullanıcı referansı
+    DocumentReference userRef =
+        FirebaseFirestore.instance.collection('Users').doc(uid);
+
+    // Kullanıcının patientID'sini al
+    DocumentSnapshot userSnapshot = await userRef.get();
+    String patientID = userSnapshot.get('patientID');
+
+    // Kullanıcı sorgusu
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('patientID', isEqualTo: patientID)
+        .get();
+
+    // Kullanıcıların altına token alanını ekleyin
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+      await doc.reference.update({'token': token});
+    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -93,7 +119,10 @@ class _patient_relative_homeState extends State<patient_relative_home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'AlzHelper', actions: [],),
+      appBar: MyAppBar(
+        title: 'AlzHelper',
+        actions: [],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

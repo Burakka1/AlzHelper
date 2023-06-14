@@ -131,7 +131,8 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
   );
 }
 
-Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc, String uid) {
+Widget familyRelationsCard(
+    Function()? onTap, QueryDocumentSnapshot doc, String uid) {
   return Stack(
     children: [
       InkWell(
@@ -157,7 +158,7 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc, String 
                 child: Text(
                   doc["relationsName"],
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -165,7 +166,7 @@ Widget familyRelationsCard(Function()? onTap, QueryDocumentSnapshot doc, String 
               Text(
                 doc["relations"],
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                 ),
               ),
               TextButton(
@@ -233,9 +234,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leading: showBackButton
           ? IconButton(
-              icon:Icon(Icons.arrow_back,color: Colors.red,),
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.red,
+              ),
               onPressed: () {
-                Navigator.pop(context); // Geri butonuna basıldığında bir önceki sayfaya dön
+                Navigator.pop(
+                    context); // Geri butonuna basıldığında bir önceki sayfaya dön
               },
             )
           : null, // Geri butonunu göstermek istemediğiniz sayfalarda leading'i null olarak bırakın
@@ -246,12 +251,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
-
-
-
-
-
-
 
 void makePhoneCall(String phoneNumber) async {
   String url = 'tel:$phoneNumber';

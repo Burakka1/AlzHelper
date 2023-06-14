@@ -56,7 +56,7 @@ class _family_relationsState extends State<family_relations> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 3/4,
+                        childAspectRatio: 4 / 6,
                         crossAxisSpacing: 16.0,
                       ),
                       children: snapshot.data!.docs.map(
@@ -64,28 +64,6 @@ class _family_relationsState extends State<family_relations> {
                           return Stack(
                             children: [
                               familyRelationsCard(() {}, note, uid),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Silme işlemini burada gerçekleştirin
-                                    _firestore
-                                        .collection("Users")
-                                        .doc(uid)
-                                        .collection("FamilyRelations")
-                                        .doc(note.id)
-                                        .delete();
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    
-                                  ),
-                                ),
-                              ),
                             ],
                           );
                         },

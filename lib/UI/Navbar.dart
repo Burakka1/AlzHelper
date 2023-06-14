@@ -19,6 +19,21 @@ class Navbar extends StatefulWidget {
   _NavbarState createState() => _NavbarState();
 }
 
+Future<String> getToken() async {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DocumentSnapshot snapshot =
+      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+  Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+  String? token = data['token'] as String?;
+
+  if (token != null) {
+    return token;
+  } else {
+    throw Exception("Token is null");
+  }
+}
+
 class _NavbarState extends State<Navbar> {
   late Timer _timer;
   bool _isSendingLocation = false;
@@ -154,67 +169,67 @@ class _NavbarState extends State<Navbar> {
   }
 
   Scaffold navbar() {
-  return Scaffold(
-    body: PageStorage(
-      child: currentScreen,
-      bucket: bucket,
-    ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    bottomNavigationBar: BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.grey.shade800,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.grey,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      currentIndex: currentTab,
-      onTap: (index) {
-        setState(() {
-          currentTab = index;
-          currentScreen = screens[currentTab];
-        });
-      },
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home_outlined,
-            size: 35,
-          ),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person_outlined,
-            size: 35,
-          ),
-          label: 'Profile',
-        ),
-      ],
-    ),
-    floatingActionButton: Container(
-      width: 70,
-      height: 70,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.red,
-        border: Border.all(color: Colors.grey.shade800,width: 6),
+    return Scaffold(
+      body: PageStorage(
+        child: currentScreen,
+        bucket: bucket,
       ),
-      child: FloatingActionButton(
-        backgroundColor: Colors.transparent,
-        child: const Icon(
-          Icons.notifications,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          sendPushNotification();
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.grey.shade800,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        currentIndex: currentTab,
+        onTap: (index) {
+          setState(() {
+            currentTab = index;
+            currentScreen = screens[currentTab];
+          });
         },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 35,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outlined,
+              size: 35,
+            ),
+            label: 'Profile',
+          ),
+        ],
       ),
-    ),
-  );
-}
-
+      floatingActionButton: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.red,
+          border: Border.all(color: Colors.grey.shade800, width: 6),
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          child: const Icon(
+            Icons.notifications,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            sendPushNotification();
+          },
+        ),
+      ),
+    );
+  }
 
   Future<void> sendPushNotification() async {
+    String Token1 = await getToken();
     try {
       http.Response response = await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -235,8 +250,7 @@ class _NavbarState extends State<Navbar> {
               'id': '1',
               'status': 'done',
             },
-            'to':
-                'e2XtW3GaR522gAtrS655Jg:APA91bFwEK-z9qb7j6pxacvynQ9NerkKePFVgjZqGvbKLZ7BMQYcs1wIS3pqZ26-xmF0kCH3yLi5lted4GbnNUs3NrFxpcVmISpZJqn1ujMDfkoaTd2FAOehBmMJjyBe8sQCbtRXFGBw',
+            'to': Token1,
           },
         ),
       );
