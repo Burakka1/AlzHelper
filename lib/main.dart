@@ -22,6 +22,7 @@ void main() async {
       channelShowBadge: true,
       locked: true,
       defaultRingtoneType: DefaultRingtoneType.Ringtone,
+      //soundSource: "asset://assets/sounds/ses.mp3",
     )
   ]);
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
