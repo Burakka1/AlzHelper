@@ -29,7 +29,6 @@ class first_screen extends StatelessWidget {
       appBar: MyAppBar(
         title: 'AlzHelper',
         actions: [],
-        showBackButton: true,
       ),
       backgroundColor: Colors.grey[200],
       body: Center(

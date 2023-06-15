@@ -114,7 +114,6 @@ class _registerState extends State<patient_register> {
       appBar: MyAppBar(
         title: 'AlzHelper',
         actions: [],
-        showBackButton: true,
       ),
       backgroundColor: Colors.grey[300],
       body: SafeArea(

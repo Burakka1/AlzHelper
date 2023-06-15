@@ -1,6 +1,8 @@
+import 'package:alarm/alarm.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_p/Login-Register/first_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_p/SplashScreen.dart';
@@ -23,6 +25,9 @@ void main() async {
     )
   ]);
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await Alarm.init(showDebugLogs: true);
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -133,12 +133,10 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
 
 Widget familyRelationsCard(
     Function()? onTap, QueryDocumentSnapshot doc, String uid) {
-  return Stack(
-    children: [
-      InkWell(
+  return Stack( children: [ InkWell(
         onTap: onTap,
         child: Container(
-          width: double.infinity, // Kartın genişliğini ayarlayın
+          width: double.infinity, 
           padding: const EdgeInsets.all(8.0),
           margin: const EdgeInsets.all(4.0),
           decoration: BoxDecoration(
@@ -159,32 +157,23 @@ Widget familyRelationsCard(
                   doc["relationsName"],
                   style: TextStyle(
                     fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                    fontWeight: FontWeight.bold, ),),),
               Text(
                 doc["relations"],
                 style: TextStyle(
                   fontSize: 16.0,
-                ),
-              ),
+                ),),
               TextButton(
                 onPressed: () {
                   makePhoneCall(doc["frnumber"]);
                 },
                 child: Text(doc["frnumber"]),
-              ),
-            ],
-          ),
-        ),
-      ),
+              ),],),),),
       Positioned(
         top: 8,
         right: 8,
         child: GestureDetector(
           onTap: () {
-            // Silme işlemini burada gerçekleştirin
             FirebaseFirestore.instance
                 .collection("Users")
                 .doc(uid)
@@ -199,14 +188,7 @@ Widget familyRelationsCard(
             ),
             child: Icon(
               Icons.delete,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
+              color: Colors.black,),),),),],);}
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

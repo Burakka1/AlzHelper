@@ -29,7 +29,6 @@ class _patient_loginState extends State<patient_login> {
       appBar: MyAppBar(
         title: 'AlzHelper',
         actions: [],
-        showBackButton: true,
       ),
       backgroundColor: Colors.grey[300],
       body: Column(
@@ -137,28 +136,23 @@ class _patient_loginState extends State<patient_login> {
   }
 
   void redirectUser(String userId) async {
-    // Firebase Firestore ile kullanıcının verilerini çekin
+
     DocumentSnapshot snapshot =
         await FirebaseFirestore.instance.collection('Users').doc(userId).get();
 
-    // Kullanıcı türünü alın
     String userType = snapshot['userType'];
 
-    // Kullanıcı türüne göre yönlendirme yapın
     if (userType == 'patient') {
-      // Kullanıcı türü A ise A sayfasına yönlendirin
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Navbar()),
       );
     } else if (userType == 'patient_relative') {
-      // Kullanıcı türü B ise B sayfasına yönlendirin
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Navbar1()),
       );
     } else {
-      // Geçersiz kullanıcı türü
       print('Geçersiz kullanıcı türü');
     }
   }
