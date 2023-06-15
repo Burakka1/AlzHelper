@@ -22,16 +22,17 @@ class Navbar extends StatefulWidget {
 Future<String> getToken() async {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   DocumentSnapshot snapshot =
-      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
-  Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-  String? token = data['token'] as String?;
+  if (snapshot.exists) {
+    String? token = snapshot.get('token') as String?;
 
-  if (token != null) {
-    return token;
-  } else {
-    throw Exception("Token is null");
+    if (token != null) {
+      return token;
+    }
   }
+
+  throw Exception("Token is null or document does not exist");
 }
 
 class _NavbarState extends State<Navbar> {
