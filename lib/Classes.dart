@@ -122,7 +122,7 @@ Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
           Text(
             doc["note_content"],
             style: CardTextStyle.mainContent,
-            maxLines: 6,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
         ],

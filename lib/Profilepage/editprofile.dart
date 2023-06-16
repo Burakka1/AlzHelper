@@ -215,7 +215,6 @@ class _AddPatientPageState extends State<AddPatientPage> {
   }
 
   void _updatePatient() {
-    // Hasta verilerini Firestore'da güncelleyin
     String uid = _auth.currentUser!.uid;
     FirebaseFirestore.instance.collection('Users').doc(uid).update({
       'description': _descriptionController.text,
@@ -224,7 +223,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
       'age': int.parse(_ageController.text),
       'phoneNumber': _phoneNumberController.text,
       'bloodGroup': _bloodGroupController.text,
-      'profileImage': _profileImageUrl, // Profil resim URL'sini kaydet
+      'profileImage': _profileImageUrl, 
     }).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Hasta bilgileri güncellendi')),

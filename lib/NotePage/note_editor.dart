@@ -14,7 +14,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   String date = DateTime.now().toString();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _mainController = TextEditingController();
-  late String noteId; // Notun kimlik değerini saklamak için değişken
+  late String noteId; 
 
   void addNoteToMatchingUsers(String noteContent, String noteId) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -34,14 +34,12 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
 
       matchingUsersSnapshot.docs.forEach((doc) {
         String userID = doc.id;
-
-        // Kendi kullanıcısını ekleme
         if (userID != user.uid) {
           FirebaseFirestore.instance
               .collection('Users')
               .doc(userID)
               .collection('Notes')
-              .doc(noteId) // Aynı ID'yi kullanarak notu güncelleme
+              .doc(noteId)
               .set({
             "note_title": _titleController.text,
             "creation_date": date,
@@ -69,7 +67,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
               TextField(
                 controller: _titleController,
                 decoration: const InputDecoration(
-                    border: InputBorder.none, hintText: "Note Başlığı"),
+                    border: InputBorder.none, hintText: "Not Başlığı"),
                 style: CardTextStyle.mainTitle,
               ),
               const SizedBox(
@@ -99,20 +97,18 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           String uid = FirebaseAuth.instance.currentUser!.uid;
           String noteContent = _mainController.text;
 
-          // Notu kullanıcının kendi notları koleksiyonuna ekle
           DocumentReference noteRef = FirebaseFirestore.instance
               .collection("Users")
               .doc(uid)
               .collection("Notes")
-              .doc(); // Benzersiz bir kimlik değeri oluştur
-          noteId = noteRef.id; // Notun kimlik değerini sakla
+              .doc(); 
+          noteId = noteRef.id;
 
           noteRef.set({
             "note_title": _titleController.text,
             "creation_date": date,
             "note_content": noteContent,
           }).then((_) {
-            // Eşleşen kullanıcılara notu ekle
             addNoteToMatchingUsers(noteContent, noteId);
 
             Navigator.pop(context);

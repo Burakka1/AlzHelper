@@ -26,13 +26,29 @@ class _patient_relative_homeState extends State<patient_relative_home> {
   LatLng? sourceLocation;
   LatLng? destination;
   String? token;
-
-  @override
+  late Timer timer;
+ @override
   void initState() {
     super.initState();
-    fetchLocations();
-    _getCurrentLocation();
+    fetchAndUpdateLocations();
     getToken();
+
+    // Timer'ı başlatarak konum ve marker güncellemelerini periyodik olarak yapın
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
+      fetchAndUpdateLocations();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Timer'ı iptal etmek için dispose metodu kullanın
+    timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> fetchAndUpdateLocations() async {
+    await _getCurrentLocation();
+    await fetchLocations();
   }
 
   Future<void> getToken() async {
@@ -107,7 +123,6 @@ class _patient_relative_homeState extends State<patient_relative_home> {
         final longitude = location.get('longitude');
 
         setState(() {
-          sourceLocation = LatLng(latitude, longitude);
           destination = LatLng(latitude, longitude);
         });
       }

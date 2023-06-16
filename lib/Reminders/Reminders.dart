@@ -165,14 +165,14 @@ class _RemindersState extends State<Reminders> {
             builder: (context) {
               TextEditingController nameController = TextEditingController();
               return AlertDialog(
-                title: Text('Add Alarm'),
+                title: Text('Alarm Ekle'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: 'Alarm Name',
+                        labelText: 'Alarm Adı',
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -182,7 +182,7 @@ class _RemindersState extends State<Reminders> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('Select Image Source'),
+                              title: Text('Bir Resim Seç'),
                               content: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -214,7 +214,7 @@ class _RemindersState extends State<Reminders> {
                           }
                         }
                       },
-                      child: Text('Select Image'),
+                      child: Text('Resim Seç'),
                     ),
                   ],
                 ),

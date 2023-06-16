@@ -51,7 +51,7 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
         title: 'AlzHelper',
         actions: [IconButton(
             onPressed: deleteNote,
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.delete,color: Colors.red,),
           ),],
         showBackButton: true,
       ),
